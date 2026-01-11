@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 
 import '../providers/interface/llm_provider.dart';
 import '../styles/llm_chat_view_style.dart';
+import '../views/attachment_action_bar_builder.dart';
 import '../views/response_builder.dart';
 
 @immutable
@@ -25,6 +26,8 @@ class ChatViewModel {
   /// [LlmStreamGenerator] for sending messages. [enableAttachments] and
   /// [enableVoiceNotes] are optional boolean flags for enabling or disabling
   /// file and voice note attachments in the chat input.
+  /// [attachmentActionBarBuilder] is an optional builder for customizing the
+  /// attachment action bar widget.
   const ChatViewModel({
     required this.provider,
     required this.style,
@@ -35,6 +38,7 @@ class ChatViewModel {
     required this.speechToText,
     required this.enableAttachments,
     required this.enableVoiceNotes,
+    required this.attachmentActionBarBuilder,
   });
 
   /// The LLM provider for the chat interface.
@@ -92,6 +96,14 @@ class ChatViewModel {
   /// will be disabled.
   final bool enableVoiceNotes;
 
+  /// Optional builder for customizing the attachment action bar widget.
+  ///
+  /// When provided, this builder replaces the default [AttachmentActionBar]
+  /// widget. This allows complete customization of the attachment
+  /// functionality, such as replacing the default file/image picker with
+  /// a custom tool selector.
+  final AttachmentActionBarBuilder? attachmentActionBarBuilder;
+
   // The following is needed to support the
   // ChatViewModelProvider.updateShouldNotify implementation
   @override
@@ -105,7 +117,8 @@ class ChatViewModel {
           other.responseBuilder == responseBuilder &&
           other.messageSender == messageSender &&
           other.enableAttachments == enableAttachments &&
-          other.enableVoiceNotes == enableVoiceNotes);
+          other.enableVoiceNotes == enableVoiceNotes &&
+          other.attachmentActionBarBuilder == attachmentActionBarBuilder);
 
   // the following is best practices when overriding operator ==
   @override
@@ -118,5 +131,6 @@ class ChatViewModel {
     messageSender,
     enableAttachments,
     enableVoiceNotes,
+    attachmentActionBarBuilder,
   );
 }

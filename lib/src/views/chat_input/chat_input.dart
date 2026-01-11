@@ -13,6 +13,7 @@ import '../../dialogs/adaptive_snack_bar/adaptive_snack_bar.dart';
 import '../../providers/interface/attachments.dart';
 import '../../providers/interface/chat_message.dart';
 import '../../styles/styles.dart';
+import '../attachment_action_bar_builder.dart';
 import 'attachments_action_bar.dart';
 import 'attachments_view.dart';
 import 'input_button.dart';
@@ -31,6 +32,10 @@ class ChatInput extends StatefulWidget {
   ///
   /// [onCancelMessage] and [onCancelStt] are optional callbacks for cancelling
   /// message submission or speech-to-text translation respectively.
+  ///
+  /// [attachmentActionBarBuilder] allows complete customization of the
+  /// attachment action bar widget (the "+" button). If not provided, the
+  /// default [AttachmentActionBar] is used.
   const ChatInput({
     required this.onSendMessage,
     required this.onTranslateStt,
@@ -39,6 +44,7 @@ class ChatInput extends StatefulWidget {
     this.onCancelMessage,
     this.onCancelStt,
     this.autofocus = true,
+    this.attachmentActionBarBuilder,
     super.key,
   }) : assert(
          !(onCancelMessage != null && onCancelStt != null),
@@ -80,6 +86,17 @@ class ChatInput extends StatefulWidget {
 
   /// Whether the input should automatically focus
   final bool autofocus;
+
+  /// Optional builder for customizing the attachment action bar widget.
+  ///
+  /// When provided, this builder replaces the default [AttachmentActionBar]
+  /// widget. The builder receives the build context and a callback for adding
+  /// attachments to the message being composed.
+  ///
+  /// This allows complete customization of the attachment functionality,
+  /// such as replacing the default file/image picker with a custom tool
+  /// selector or other input method.
+  final AttachmentActionBarBuilder? attachmentActionBarBuilder;
 
   @override
   State<ChatInput> createState() => _ChatInputState();
@@ -178,9 +195,14 @@ class _ChatInputState extends State<ChatInput> {
                         if (_viewModel!.enableAttachments)
                           Padding(
                             padding: const EdgeInsets.only(bottom: 14),
-                            child: AttachmentActionBar(
-                              onAttachments: onAttachments,
-                            ),
+                            child: widget.attachmentActionBarBuilder != null
+                                ? widget.attachmentActionBarBuilder!(
+                                    context,
+                                    onAttachments,
+                                  )
+                                : AttachmentActionBar(
+                                    onAttachments: onAttachments,
+                                  ),
                           ),
                         Expanded(
                           child: TextOrAudioInput(

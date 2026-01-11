@@ -17,6 +17,7 @@ import '../../providers/interface/attachments.dart';
 import '../../providers/interface/chat_message.dart';
 import '../../providers/interface/llm_provider.dart';
 import '../../styles/llm_chat_view_style.dart';
+import '../attachment_action_bar_builder.dart';
 import '../chat_history_view.dart';
 import '../chat_input/chat_input.dart';
 import '../response_builder.dart';
@@ -76,6 +77,10 @@ class LlmChatView extends StatefulWidget {
   ///   during a chat operation. Defaults to 'ERROR'.
   /// - [enableAttachments]: Optional. Whether to enable file and image attachments in the chat input.
   /// - [enableVoiceNotes]: Optional. Whether to enable voice notes in the chat input.
+  /// - [attachmentActionBarBuilder]: Optional. A custom builder for the
+  ///   attachment action bar widget. When provided, replaces the default
+  ///   attachment picker with a custom widget. See [AttachmentActionBarBuilder]
+  ///   for usage examples.
   LlmChatView({
     required LlmProvider provider,
     LlmChatViewStyle? style,
@@ -91,6 +96,7 @@ class LlmChatView extends StatefulWidget {
     this.enableAttachments = true,
     this.enableVoiceNotes = true,
     this.autofocus,
+    this.attachmentActionBarBuilder,
     super.key,
   }) : viewModel = ChatViewModel(
          provider: provider,
@@ -102,6 +108,7 @@ class LlmChatView extends StatefulWidget {
          welcomeMessage: welcomeMessage,
          enableAttachments: enableAttachments,
          enableVoiceNotes: enableVoiceNotes,
+         attachmentActionBarBuilder: attachmentActionBarBuilder,
        );
 
   /// Whether to enable file and image attachments in the chat input.
@@ -150,6 +157,30 @@ class LlmChatView extends StatefulWidget {
   /// presence of suggestions. If there are no suggestions, the input field
   /// will be focused automatically.
   final bool? autofocus;
+
+  /// Optional builder for customizing the attachment action bar widget.
+  ///
+  /// When provided, this replaces the default attachment picker with a custom
+  /// widget. The builder receives the build context and a callback for adding
+  /// attachments to the message being composed.
+  ///
+  /// Example:
+  /// ```dart
+  /// attachmentActionBarBuilder: (context, onAttachments) {
+  ///   return IconButton(
+  ///     icon: Icon(Icons.auto_awesome),
+  ///     onPressed: () async {
+  ///       final result = await showMyCustomSelector(context);
+  ///       if (result != null) {
+  ///         onAttachments([MyCustomAttachment(result)]);
+  ///       }
+  ///     },
+  ///   );
+  /// }
+  /// ```
+  ///
+  /// Note: This builder is only used when [enableAttachments] is `true`.
+  final AttachmentActionBarBuilder? attachmentActionBarBuilder;
 
   @override
   State<LlmChatView> createState() => _LlmChatViewState();
@@ -228,6 +259,8 @@ class _LlmChatViewState extends State<LlmChatView>
                         onTranslateStt: _onTranslateStt,
                         onCancelStt:
                             _pendingSttResponse == null ? null : _onCancelStt,
+                        attachmentActionBarBuilder:
+                            widget.attachmentActionBarBuilder,
                       ),
                     ),
                   ],
