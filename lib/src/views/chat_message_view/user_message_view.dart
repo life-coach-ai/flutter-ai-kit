@@ -43,7 +43,12 @@ class UserMessageView extends StatelessWidget {
               child: SizedBox(
                 height: 80,
                 width: 200,
-                child: AttachmentView(attachment),
+                child: ChatViewModelClient(
+                  builder: (context, viewModel, _) => AttachmentView(
+                    attachment,
+                    registry: viewModel.attachmentViewRegistry,
+                  ),
+                ),
               ),
             ),
           ),

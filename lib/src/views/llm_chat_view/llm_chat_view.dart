@@ -18,6 +18,7 @@ import '../../providers/interface/chat_message.dart';
 import '../../providers/interface/llm_provider.dart';
 import '../../styles/llm_chat_view_style.dart';
 import '../attachment_action_bar_builder.dart';
+import '../attachment_view_registry.dart';
 import '../chat_history_view.dart';
 import '../chat_input/chat_input.dart';
 import '../response_builder.dart';
@@ -81,6 +82,9 @@ class LlmChatView extends StatefulWidget {
   ///   attachment action bar widget. When provided, replaces the default
   ///   attachment picker with a custom widget. See [AttachmentActionBarBuilder]
   ///   for usage examples.
+  /// - [attachmentViewRegistry]: Optional. A registry for custom attachment
+  ///   view builders. Allows custom rendering of domain-specific attachment
+  ///   types.
   LlmChatView({
     required LlmProvider provider,
     LlmChatViewStyle? style,
@@ -97,6 +101,7 @@ class LlmChatView extends StatefulWidget {
     this.enableVoiceNotes = true,
     this.autofocus,
     this.attachmentActionBarBuilder,
+    this.attachmentViewRegistry,
     super.key,
   }) : viewModel = ChatViewModel(
          provider: provider,
@@ -109,6 +114,7 @@ class LlmChatView extends StatefulWidget {
          enableAttachments: enableAttachments,
          enableVoiceNotes: enableVoiceNotes,
          attachmentActionBarBuilder: attachmentActionBarBuilder,
+         attachmentViewRegistry: attachmentViewRegistry,
        );
 
   /// Whether to enable file and image attachments in the chat input.
@@ -181,6 +187,25 @@ class LlmChatView extends StatefulWidget {
   ///
   /// Note: This builder is only used when [enableAttachments] is `true`.
   final AttachmentActionBarBuilder? attachmentActionBarBuilder;
+
+  /// Optional registry for custom attachment view builders.
+  ///
+  /// When provided, custom attachment types can be rendered with their own
+  /// view builders instead of the default rendering logic. This enables
+  /// domain-specific attachments (like chat tools) with custom UI.
+  ///
+  /// Example:
+  /// ```dart
+  /// attachmentViewRegistry: AttachmentViewRegistry(
+  ///   builders: {
+  ///     ChatToolAttachment: (context, attachment) {
+  ///       final tool = attachment as ChatToolAttachment;
+  ///       return ChatToolAttachmentView(tool: tool);
+  ///     },
+  ///   },
+  /// )
+  /// ```
+  final AttachmentViewRegistry? attachmentViewRegistry;
 
   @override
   State<LlmChatView> createState() => _LlmChatViewState();

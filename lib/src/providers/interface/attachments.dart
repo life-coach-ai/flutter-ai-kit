@@ -10,8 +10,11 @@ import 'package:mime/mime.dart';
 ///
 /// This class serves as a base for different types of attachments
 /// (e.g., files, images, links) that can be included in a chat message.
+///
+/// Custom attachment types can extend this class to create domain-specific
+/// attachments with custom rendering via [AttachmentViewRegistry].
 @immutable
-sealed class Attachment {
+base class Attachment {
   /// Creates an [Attachment] with the given name.
   ///
   /// [name] is the name of the attachment, which must not be null.
