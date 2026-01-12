@@ -60,9 +60,10 @@ class FileAttachmentView extends StatelessWidget {
                   ),
                   Text(
                     switch (attachment) {
-                      (final ImageFileAttachment a) => a.mimeType,
-                      (final FileAttachment a) => a.mimeType,
-                      (final LinkAttachment a) => a.mimeType,
+                      ImageFileAttachment a => a.mimeType,
+                      FileAttachment a => a.mimeType,
+                      LinkAttachment a => a.mimeType,
+                      CustomAttachment a => a.customType,
                     },
                     style: attachmentStyle.filetypeStyle,
                     overflow: TextOverflow.ellipsis,

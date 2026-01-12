@@ -11,10 +11,10 @@ import 'package:mime/mime.dart';
 /// This class serves as a base for different types of attachments
 /// (e.g., files, images, links) that can be included in a chat message.
 ///
-/// Custom attachment types can extend this class to create domain-specific
-/// attachments with custom rendering via [AttachmentViewRegistry].
+/// For custom attachment types, use [CustomAttachment] to wrap domain-specific
+/// data with custom rendering via [AttachmentViewRegistry].
 @immutable
-base class Attachment {
+sealed class Attachment {
   /// Creates an [Attachment] with the given name.
   ///
   /// [name] is the name of the attachment, which must not be null.
@@ -178,5 +178,58 @@ final class LinkAttachment extends Attachment {
       'name: $name, '
       'url: $url, '
       'mimeType: $mimeType'
+      ')';
+}
+
+/// Represents a custom attachment in a chat message.
+///
+/// This class provides a designated extension point for third-party code
+/// to create custom attachment types without breaking the sealed class hierarchy.
+/// Custom attachments carry arbitrary serializable data and use a type identifier
+/// for registration with [AttachmentViewRegistry].
+///
+/// Example:
+/// ```dart
+/// final toolAttachment = CustomAttachment(
+///   name: 'qi_men',
+///   customType: 'chat_tool',
+///   data: {
+///     'toolId': 'qi_men',
+///     'params': {...},
+///   },
+/// );
+/// ```
+@immutable
+final class CustomAttachment extends Attachment {
+  /// Creates a [CustomAttachment] with the given name, custom type, and data.
+  ///
+  /// [name] is the display name of the attachment.
+  /// [customType] is a string identifier for this custom attachment type
+  /// (e.g., 'chat_tool', 'location', 'payment'). This is used for registry lookup.
+  /// [data] is a serializable map containing the custom attachment's data.
+  const CustomAttachment({
+    required super.name,
+    required this.customType,
+    required this.data,
+  });
+
+  /// The type identifier for this custom attachment.
+  ///
+  /// This string is used to look up the appropriate view builder in
+  /// [AttachmentViewRegistry]. Examples: 'chat_tool', 'location', 'payment'.
+  final String customType;
+
+  /// The serializable data for this custom attachment.
+  ///
+  /// This map should contain all the data needed to reconstruct the
+  /// custom attachment and render its view. The data must be JSON-serializable.
+  final Map<String, dynamic> data;
+
+  @override
+  String toString() =>
+      'CustomAttachment('
+      'name: $name, '
+      'customType: $customType, '
+      'data: $data'
       ')';
 }

@@ -23,12 +23,16 @@ class ImagePreviewDialog extends StatelessWidget {
     padding: const EdgeInsets.all(8),
     child: Center(
       child: switch (attachment) {
-        (final ImageFileAttachment a) => Image.memory(a.bytes, fit: _fit),
-        (FileAttachment _) =>
+        ImageFileAttachment a => Image.memory(a.bytes, fit: _fit),
+        FileAttachment _ =>
           throw AssertionError(
             'File attachments not supported in image preview dialog',
           ),
-        (final LinkAttachment a) => Image.network(a.url.toString(), fit: _fit),
+        LinkAttachment a => Image.network(a.url.toString(), fit: _fit),
+        CustomAttachment _ =>
+          throw AssertionError(
+            'Custom attachments not supported in image preview dialog',
+          ),
       },
     ),
   );

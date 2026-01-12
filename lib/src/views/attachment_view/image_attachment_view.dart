@@ -31,12 +31,16 @@ class ImageAttachmentView extends StatelessWidget {
     child: GestureDetector(
       onTap: () => unawaited(_showPreviewDialog(context)),
       child: switch (attachment) {
-        (final ImageFileAttachment a) => Image.memory(a.bytes),
-        (FileAttachment _) =>
+        ImageFileAttachment a => Image.memory(a.bytes),
+        FileAttachment _ =>
           throw AssertionError(
             'File attachments not supported in image attachment view',
           ),
-        (final LinkAttachment a) => Image.network(a.url.toString()),
+        LinkAttachment a => Image.network(a.url.toString()),
+        CustomAttachment _ =>
+          throw AssertionError(
+            'Custom attachments not supported in image attachment view',
+          ),
       },
     ),
   );

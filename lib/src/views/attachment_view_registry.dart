@@ -4,30 +4,29 @@
 
 import 'package:flutter/widgets.dart';
 
-import '../providers/interface/attachments.dart';
-
 /// A function that builds a widget for a custom attachment type.
 ///
 /// The [context] provides access to theme and localization.
-/// The [attachment] is the custom attachment instance to render.
+/// The [data] is the custom attachment's data map that can be deserialized
+/// into the appropriate type for rendering.
 typedef AttachmentViewBuilder = Widget Function(
   BuildContext context,
-  Attachment attachment,
+  Map<String, dynamic> data,
 );
 
 /// Registry for custom attachment view builders.
 ///
 /// This allows applications to register custom attachment types and their
-/// corresponding view builders. When [AttachmentView] encounters an attachment
-/// type in the registry, it will use the registered builder instead of the
-/// default rendering logic.
+/// corresponding view builders. When [AttachmentView] encounters a
+/// [CustomAttachment], it will use the registered builder for that customType
+/// instead of the default rendering logic.
 ///
 /// Example usage:
 /// ```dart
 /// final registry = AttachmentViewRegistry(
 ///   builders: {
-///     ChatToolAttachment: (context, attachment) {
-///       final tool = attachment as ChatToolAttachment;
+///     'chat_tool': (context, data) {
+///       final tool = ChatToolAttachment.fromData(data);
 ///       return ChatToolAttachmentView(tool: tool);
 ///     },
 ///   },
@@ -41,22 +40,23 @@ typedef AttachmentViewBuilder = Widget Function(
 class AttachmentViewRegistry {
   /// Creates an [AttachmentViewRegistry] with the given builders.
   ///
-  /// The [builders] map associates [Type] keys (representing attachment classes)
-  /// with [AttachmentViewBuilder] functions that render those attachments.
+  /// The [builders] map associates custom type identifiers (strings like
+  /// 'chat_tool', 'location', etc.) with [AttachmentViewBuilder] functions
+  /// that render those custom attachment types.
   const AttachmentViewRegistry({required this.builders});
 
-  /// Map of attachment types to their view builders.
+  /// Map of custom type identifiers to their view builders.
   ///
-  /// Keys are the runtime types of custom attachment classes.
-  /// Values are builder functions that create widgets for those types.
-  final Map<Type, AttachmentViewBuilder> builders;
+  /// Keys are string identifiers matching [CustomAttachment.customType].
+  /// Values are builder functions that create widgets for those custom types.
+  final Map<String, AttachmentViewBuilder> builders;
 
-  /// Get the builder for a given attachment type.
+  /// Get the builder for a given custom attachment type.
   ///
-  /// Returns `null` if no builder is registered for this type.
-  AttachmentViewBuilder? getBuilder(Type attachmentType) =>
-      builders[attachmentType];
+  /// Returns `null` if no builder is registered for this custom type.
+  AttachmentViewBuilder? getBuilder(String customType) =>
+      builders[customType];
 
-  /// Check if a builder is registered for a given attachment type.
-  bool hasBuilder(Type attachmentType) => builders.containsKey(attachmentType);
+  /// Check if a builder is registered for a given custom attachment type.
+  bool hasBuilder(String customType) => builders.containsKey(customType);
 }

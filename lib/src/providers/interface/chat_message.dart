@@ -55,7 +55,19 @@ class ChatMessage {
             name: attachment['name'] as String,
             url: Uri.parse(attachment['data'] as String),
           ),
-          _ => throw UnimplementedError(),
+          'custom' => CustomAttachment(
+            name: attachment['name'] as String,
+            customType: attachment['customType'] as String,
+            data: attachment['data'] as Map<String, dynamic>,
+          ),
+          // Handle legacy/unknown types by treating as custom with type as customType
+          _ => CustomAttachment(
+            name: attachment['name'] as String? ?? 'unknown',
+            customType: attachment['type'] as String? ?? 'unknown',
+            data: (attachment['data'] is Map<String, dynamic>)
+                ? attachment['data'] as Map<String, dynamic>
+                : {'raw': attachment['data']},
+          ),
         },
     ],
   );
@@ -117,18 +129,22 @@ class ChatMessage {
       for (final attachment in attachments)
         {
           'type': switch (attachment) {
-            (FileAttachment _) => 'file',
-            (LinkAttachment _) => 'link',
+            FileAttachment _ => 'file',
+            LinkAttachment _ => 'link',
+            CustomAttachment _ => 'custom',
           },
           'name': attachment.name,
           'mimeType': switch (attachment) {
-            (final FileAttachment a) => a.mimeType,
-            (final LinkAttachment a) => a.mimeType,
+            FileAttachment a => a.mimeType,
+            LinkAttachment a => a.mimeType,
+            CustomAttachment _ => null,
           },
           'data': switch (attachment) {
-            (final FileAttachment a) => base64Encode(a.bytes),
-            (final LinkAttachment a) => a.url,
+            FileAttachment a => base64Encode(a.bytes),
+            LinkAttachment a => a.url,
+            CustomAttachment a => a.data,
           },
+          if (attachment case CustomAttachment a) 'customType': a.customType,
         },
     ],
   };

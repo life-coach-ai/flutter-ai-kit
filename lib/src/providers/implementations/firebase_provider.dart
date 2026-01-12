@@ -168,8 +168,9 @@ class FirebaseProvider extends LlmProvider with ChangeNotifier {
   );
 
   static Part _partFrom(Attachment attachment) => switch (attachment) {
-    (final FileAttachment a) => InlineDataPart(a.mimeType, a.bytes),
-    (final LinkAttachment a) => TextPart(a.url.toString()),
+    FileAttachment a => InlineDataPart(a.mimeType, a.bytes),
+    LinkAttachment a => TextPart(a.url.toString()),
+    CustomAttachment a => TextPart('${a.customType}: ${a.name}'),
   };
 
   static Content _contentFrom(ChatMessage message) => Content(

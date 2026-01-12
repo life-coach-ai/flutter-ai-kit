@@ -14,8 +14,8 @@ import 'image_attachment_view.dart';
 ///
 /// This widget determines the appropriate view for the given [attachment]
 /// and renders it accordingly. It supports file attachments, image
-/// attachments, and link attachments. Custom attachment types can be
-/// registered via [AttachmentViewRegistry].
+/// attachments, link attachments, and custom attachments. Custom attachment
+/// types can be registered via [AttachmentViewRegistry].
 @immutable
 class AttachmentView extends StatelessWidget {
   /// Creates an AttachmentView.
@@ -33,24 +33,34 @@ class AttachmentView extends StatelessWidget {
 
   /// Optional registry for custom attachment view builders.
   ///
-  /// If provided and a builder is registered for this attachment's type,
-  /// the custom builder will be used instead of the default rendering logic.
+  /// If provided and a builder is registered for a [CustomAttachment]'s
+  /// customType, the registered builder will be used to render it.
   final AttachmentViewRegistry? registry;
 
   @override
   Widget build(BuildContext context) {
-    // Check for custom builder first
-    final customBuilder = registry?.getBuilder(attachment.runtimeType);
-    if (customBuilder != null) {
-      return customBuilder(context, attachment);
-    }
-
-    // Fall back to default rendering
+    // Exhaustive pattern matching on sealed Attachment class
     return switch (attachment) {
-      (final ImageFileAttachment a) => ImageAttachmentView(a),
-      (final FileAttachment a) => FileAttachmentView(a),
-      (final LinkAttachment a) => LinkAttachmentView(a),
-      _ => Text('Unknown attachment type: ${attachment.runtimeType}'),
+      ImageFileAttachment a => ImageAttachmentView(a),
+      FileAttachment a => FileAttachmentView(a),
+      LinkAttachment a => LinkAttachmentView(a),
+      CustomAttachment a => _buildCustom(context, a),
     };
+  }
+
+  /// Builds a custom attachment using the registry.
+  ///
+  /// If a builder is registered for this custom type, it will be used.
+  /// Otherwise, a fallback widget is displayed.
+  Widget _buildCustom(BuildContext context, CustomAttachment attachment) {
+    final builder = registry?.getBuilder(attachment.customType);
+    if (builder != null) {
+      return builder(context, attachment.data);
+    }
+    // Fallback for unregistered custom types
+    return Text(
+      'Unknown custom attachment type: ${attachment.customType}',
+      style: const TextStyle(color: Color(0xFFFF0000)),
+    );
   }
 }
