@@ -199,6 +199,7 @@ class _ChatInputState extends State<ChatInput> {
                                 ? widget.attachmentActionBarBuilder!(
                                     context,
                                     onAttachments,
+                                    _attachments,
                                   )
                                 : AttachmentActionBar(
                                     onAttachments: onAttachments,

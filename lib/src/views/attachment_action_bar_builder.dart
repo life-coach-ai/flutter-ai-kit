@@ -17,6 +17,11 @@ import '../providers/interface/attachments.dart';
 /// iterable of [Attachment] objects that will be added to the message being
 /// composed.
 ///
+/// The [currentAttachments] parameter provides read-only access to the
+/// attachments currently in the chat input. This allows the builder to
+/// implement features like preventing duplicate selections or showing which
+/// items are already attached.
+///
 /// The function should return a [Widget] that will be displayed in the chat
 /// input row, typically to the left of the text input field. This allows
 /// complete customization of the attachment action bar, such as replacing the
@@ -28,11 +33,14 @@ import '../providers/interface/attachments.dart';
 /// LlmChatView(
 ///   provider: myProvider,
 ///   enableAttachments: true,
-///   attachmentActionBarBuilder: (context, onAttachments) {
+///   attachmentActionBarBuilder: (context, onAttachments, currentAttachments) {
 ///     return IconButton(
 ///       icon: Icon(Icons.auto_awesome),
 ///       onPressed: () async {
-///         final result = await showMyCustomSelector(context);
+///         final result = await showMyCustomSelector(
+///           context,
+///           alreadySelected: currentAttachments,
+///         );
 ///         if (result != null) {
 ///           onAttachments([MyCustomAttachment(result)]);
 ///         }
@@ -52,4 +60,5 @@ import '../providers/interface/attachments.dart';
 typedef AttachmentActionBarBuilder = Widget Function(
   BuildContext context,
   void Function(Iterable<Attachment>) onAttachments,
+  Iterable<Attachment> currentAttachments,
 );
