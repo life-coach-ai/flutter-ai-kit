@@ -56,6 +56,14 @@ class UserMessageView extends StatelessWidget {
                         ];
                   }
 
+                  final isVisible =
+                      override?.messageItemVisible ??
+                      attachmentsStyle.messageItemVisible ??
+                      true;
+                  if (!isVisible) {
+                    return const SizedBox.shrink();
+                  }
+
                   final height =
                       override?.messageItemHeight ??
                       attachmentsStyle.messageItemHeight ??

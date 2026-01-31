@@ -14,6 +14,7 @@ class AttachmentItemStyle {
     this.itemPadding,
     this.messageItemHeight,
     this.messageItemWidth,
+    this.messageItemVisible,
   });
 
   final double? listHeight;
@@ -22,6 +23,7 @@ class AttachmentItemStyle {
   final EdgeInsets? itemPadding;
   final double? messageItemHeight;
   final double? messageItemWidth;
+  final bool? messageItemVisible;
 }
 
 /// Style for the attachment list and items in the chat input.
@@ -34,6 +36,7 @@ class AttachmentsStyle {
     this.itemPadding,
     this.messageItemHeight,
     this.messageItemWidth,
+    this.messageItemVisible,
     this.customTypeOverrides,
   });
 
@@ -51,6 +54,8 @@ class AttachmentsStyle {
           style?.messageItemHeight ?? defaultStyle.messageItemHeight,
       messageItemWidth:
           style?.messageItemWidth ?? defaultStyle.messageItemWidth,
+      messageItemVisible:
+          style?.messageItemVisible ?? defaultStyle.messageItemVisible,
       customTypeOverrides:
           style?.customTypeOverrides ?? defaultStyle.customTypeOverrides,
     );
@@ -65,6 +70,7 @@ class AttachmentsStyle {
     itemPadding: EdgeInsets.only(right: 12),
     messageItemHeight: 40,
     messageItemWidth: 100,
+    messageItemVisible: true,
     customTypeOverrides: {},
   );
 
@@ -75,6 +81,7 @@ class AttachmentsStyle {
     EdgeInsets? itemPadding,
     double? messageItemHeight,
     double? messageItemWidth,
+    bool? messageItemVisible,
     Map<String, AttachmentItemStyle>? customTypeOverrides,
   }) => AttachmentsStyle(
     listHeight: listHeight ?? this.listHeight,
@@ -83,6 +90,7 @@ class AttachmentsStyle {
     itemPadding: itemPadding ?? this.itemPadding,
     messageItemHeight: messageItemHeight ?? this.messageItemHeight,
     messageItemWidth: messageItemWidth ?? this.messageItemWidth,
+    messageItemVisible: messageItemVisible ?? this.messageItemVisible,
     customTypeOverrides: customTypeOverrides ?? this.customTypeOverrides,
   );
 
@@ -92,6 +100,7 @@ class AttachmentsStyle {
   final EdgeInsets? itemPadding;
   final double? messageItemHeight;
   final double? messageItemWidth;
+  final bool? messageItemVisible;
 
   /// Optional size overrides keyed by CustomAttachment.customType.
   final Map<String, AttachmentItemStyle>? customTypeOverrides;
