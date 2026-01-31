@@ -181,6 +181,9 @@ class _ChatInputState extends State<ChatInput> {
         AttachmentsView(
           attachments: _attachments,
           onRemove: onRemoveAttachment,
+          style:
+              _chatStyle?.attachmentsStyle ??
+              AttachmentsStyle.defaultStyle(),
         ),
         if (_attachments.isNotEmpty) const SizedBox(height: 6),
         ValueListenableBuilder(

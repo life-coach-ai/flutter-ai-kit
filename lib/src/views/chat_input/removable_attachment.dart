@@ -25,6 +25,8 @@ class RemovableAttachment extends StatelessWidget {
   const RemovableAttachment({
     required this.attachment,
     required this.onRemove,
+    required this.itemHeight,
+    required this.itemPadding,
     super.key,
   });
 
@@ -36,6 +38,12 @@ class RemovableAttachment extends StatelessWidget {
   /// The [Attachment] to be removed is passed as an argument to this function.
   final Function(Attachment) onRemove;
 
+  /// Height for the attachment item.
+  final double itemHeight;
+
+  /// Padding for the attachment item.
+  final EdgeInsets itemPadding;
+
   @override
   Widget build(BuildContext context) => ChatViewModelClient(
     builder: (context, viewModel, _) => Stack(
@@ -46,8 +54,8 @@ class RemovableAttachment extends StatelessWidget {
                   ? () => unawaited(_showPreviewDialog(context))
                   : null,
           child: Container(
-            padding: const EdgeInsets.only(right: 12),
-            height: 80,
+            padding: itemPadding,
+            height: itemHeight,
             child: AttachmentView(
               attachment,
               registry: viewModel.attachmentViewRegistry,

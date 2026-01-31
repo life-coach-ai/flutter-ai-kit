@@ -5,6 +5,7 @@
 import 'package:flutter/widgets.dart';
 
 import '../../providers/interface/attachments.dart';
+import '../../styles/attachments_style.dart';
 import 'removable_attachment.dart';
 
 /// A widget that displays a horizontal list of attachments with the ability to
@@ -19,6 +20,7 @@ class AttachmentsView extends StatelessWidget {
   const AttachmentsView({
     required this.attachments,
     required this.onRemove,
+    required this.style,
     super.key,
   });
 
@@ -30,19 +32,52 @@ class AttachmentsView extends StatelessWidget {
   /// The removed [Attachment] is passed as an argument to this function.
   final Function(Attachment) onRemove;
 
+  /// Style for attachment list and items.
+  final AttachmentsStyle style;
+
   @override
-  Widget build(BuildContext context) => Container(
-    height: attachments.isNotEmpty ? 104 : 0,
-    padding: const EdgeInsets.only(top: 12, bottom: 12, left: 12),
-    child:
-        attachments.isNotEmpty
-            ? ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                for (final a in attachments)
-                  RemovableAttachment(attachment: a, onRemove: onRemove),
-              ],
-            )
-            : const SizedBox(),
-  );
+  Widget build(BuildContext context) {
+    final resolvedStyle = AttachmentsStyle.resolve(style);
+
+    AttachmentItemStyle? override;
+    if (attachments.isNotEmpty) {
+      final first = attachments.first;
+      if (first is CustomAttachment) {
+        final customType = first.customType;
+        final allSameType = attachments.every(
+          (a) => a is CustomAttachment && a.customType == customType,
+        );
+        if (allSameType) {
+          override = resolvedStyle.customTypeOverrides?[customType];
+        }
+      }
+    }
+
+    final listHeight = override?.listHeight ?? resolvedStyle.listHeight ?? 0;
+    final listPadding =
+        override?.listPadding ?? resolvedStyle.listPadding ?? EdgeInsets.zero;
+    final itemHeight = override?.itemHeight ?? resolvedStyle.itemHeight ?? 0;
+    final itemPadding =
+        override?.itemPadding ?? resolvedStyle.itemPadding ?? EdgeInsets.zero;
+
+    return Container(
+      height: attachments.isNotEmpty ? listHeight : 0,
+      padding: listPadding,
+      child:
+          attachments.isNotEmpty
+              ? ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  for (final a in attachments)
+                    RemovableAttachment(
+                      attachment: a,
+                      onRemove: onRemove,
+                      itemHeight: itemHeight,
+                      itemPadding: itemPadding,
+                    ),
+                ],
+              )
+              : const SizedBox(),
+    );
+  }
 }
