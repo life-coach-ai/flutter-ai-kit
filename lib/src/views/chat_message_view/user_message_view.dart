@@ -5,6 +5,7 @@
 import 'package:flutter/widgets.dart';
 
 import '../../chat_view_model/chat_view_model_client.dart';
+import '../../providers/interface/attachments.dart';
 import '../../providers/interface/chat_message.dart';
 import '../../styles/styles.dart';
 import '../attachment_view/attachment_view.dart';
@@ -40,15 +41,39 @@ class UserMessageView extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 6),
             child: Align(
               alignment: Alignment.topRight,
-              child: SizedBox(
-                height: 80,
-                width: 200,
-                child: ChatViewModelClient(
-                  builder: (context, viewModel, _) => AttachmentView(
-                    attachment,
-                    registry: viewModel.attachmentViewRegistry,
-                  ),
-                ),
+              child: ChatViewModelClient(
+                builder: (context, viewModel, _) {
+                  final chatStyle = LlmChatViewStyle.resolve(viewModel.style);
+                  final attachmentsStyle = AttachmentsStyle.resolve(
+                    chatStyle.attachmentsStyle,
+                  );
+
+                  AttachmentItemStyle? override;
+                  if (attachment is CustomAttachment) {
+                    override =
+                        attachmentsStyle.customTypeOverrides?[
+                            attachment.customType
+                        ];
+                  }
+
+                  final height =
+                      override?.messageItemHeight ??
+                      attachmentsStyle.messageItemHeight ??
+                      40;
+                  final width =
+                      override?.messageItemWidth ??
+                      attachmentsStyle.messageItemWidth ??
+                      100;
+
+                  return SizedBox(
+                    height: height,
+                    width: width,
+                    child: AttachmentView(
+                      attachment,
+                      registry: viewModel.attachmentViewRegistry,
+                    ),
+                  );
+                },
               ),
             ),
           ),
