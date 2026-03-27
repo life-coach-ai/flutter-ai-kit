@@ -6,7 +6,8 @@ import 'package:flutter/foundation.dart';
 
 import '../providers/interface/llm_provider.dart';
 import '../styles/llm_chat_view_style.dart';
-import '../views/attachment_action_bar_builder.dart';
+import '../views/attachment_action_bar_builder.dart'
+    show AttachmentActionBarBuilder, ComposerFooterBuilder;
 import '../views/attachment_view_registry.dart';
 import '../views/response_builder.dart';
 
@@ -42,6 +43,7 @@ class ChatViewModel {
     required this.enableAttachments,
     required this.enableVoiceNotes,
     required this.attachmentActionBarBuilder,
+    this.composerFooterBuilder,
     required this.attachmentViewRegistry,
   });
 
@@ -108,6 +110,9 @@ class ChatViewModel {
   /// a custom tool selector.
   final AttachmentActionBarBuilder? attachmentActionBarBuilder;
 
+  /// Optional builder for widgets below the text/send row in [ChatInput].
+  final ComposerFooterBuilder? composerFooterBuilder;
+
   /// Optional registry for custom attachment view builders.
   ///
   /// When provided, custom attachment types can be rendered with their own
@@ -130,6 +135,7 @@ class ChatViewModel {
           other.enableAttachments == enableAttachments &&
           other.enableVoiceNotes == enableVoiceNotes &&
           other.attachmentActionBarBuilder == attachmentActionBarBuilder &&
+          other.composerFooterBuilder == composerFooterBuilder &&
           other.attachmentViewRegistry == attachmentViewRegistry);
 
   // the following is best practices when overriding operator ==
@@ -144,6 +150,7 @@ class ChatViewModel {
     enableAttachments,
     enableVoiceNotes,
     attachmentActionBarBuilder,
+    composerFooterBuilder,
     attachmentViewRegistry,
   );
 }

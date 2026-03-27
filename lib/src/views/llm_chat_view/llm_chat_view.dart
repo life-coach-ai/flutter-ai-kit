@@ -17,7 +17,8 @@ import '../../providers/interface/attachments.dart';
 import '../../providers/interface/chat_message.dart';
 import '../../providers/interface/llm_provider.dart';
 import '../../styles/llm_chat_view_style.dart';
-import '../attachment_action_bar_builder.dart';
+import '../attachment_action_bar_builder.dart'
+    show AttachmentActionBarBuilder, ComposerFooterBuilder;
 import '../attachment_view_registry.dart';
 import '../chat_history_view.dart';
 import '../chat_input/chat_input.dart';
@@ -101,6 +102,7 @@ class LlmChatView extends StatefulWidget {
     this.enableVoiceNotes = true,
     this.autofocus,
     this.attachmentActionBarBuilder,
+    this.composerFooterBuilder,
     this.attachmentViewRegistry,
     super.key,
   }) : viewModel = ChatViewModel(
@@ -114,6 +116,7 @@ class LlmChatView extends StatefulWidget {
          enableAttachments: enableAttachments,
          enableVoiceNotes: enableVoiceNotes,
          attachmentActionBarBuilder: attachmentActionBarBuilder,
+         composerFooterBuilder: composerFooterBuilder,
          attachmentViewRegistry: attachmentViewRegistry,
        );
 
@@ -187,6 +190,9 @@ class LlmChatView extends StatefulWidget {
   ///
   /// Note: This builder is only used when [enableAttachments] is `true`.
   final AttachmentActionBarBuilder? attachmentActionBarBuilder;
+
+  /// Optional builder for UI below the composer's text/send row.
+  final ComposerFooterBuilder? composerFooterBuilder;
 
   /// Optional registry for custom attachment view builders.
   ///
@@ -286,6 +292,8 @@ class _LlmChatViewState extends State<LlmChatView>
                             _pendingSttResponse == null ? null : _onCancelStt,
                         attachmentActionBarBuilder:
                             widget.attachmentActionBarBuilder,
+                        composerFooterBuilder:
+                            widget.composerFooterBuilder,
                       ),
                     ),
                   ],

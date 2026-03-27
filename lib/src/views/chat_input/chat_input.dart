@@ -13,7 +13,8 @@ import '../../dialogs/adaptive_snack_bar/adaptive_snack_bar.dart';
 import '../../providers/interface/attachments.dart';
 import '../../providers/interface/chat_message.dart';
 import '../../styles/styles.dart';
-import '../attachment_action_bar_builder.dart';
+import '../attachment_action_bar_builder.dart'
+    show AttachmentActionBarBuilder, ComposerFooterBuilder;
 import 'attachments_action_bar.dart';
 import 'attachments_view.dart';
 import 'input_button.dart';
@@ -45,6 +46,7 @@ class ChatInput extends StatefulWidget {
     this.onCancelStt,
     this.autofocus = true,
     this.attachmentActionBarBuilder,
+    this.composerFooterBuilder,
     super.key,
   }) : assert(
          !(onCancelMessage != null && onCancelStt != null),
@@ -97,6 +99,9 @@ class ChatInput extends StatefulWidget {
   /// such as replacing the default file/image picker with a custom tool
   /// selector or other input method.
   final AttachmentActionBarBuilder? attachmentActionBarBuilder;
+
+  /// Optional widget below the text/send row.
+  final ComposerFooterBuilder? composerFooterBuilder;
 
   @override
   State<ChatInput> createState() => _ChatInputState();
@@ -239,6 +244,23 @@ class _ChatInputState extends State<ChatInput> {
                     ),
               ),
         ),
+        if (widget.composerFooterBuilder != null)
+          Builder(
+            builder: (ctx) {
+              final footer = widget.composerFooterBuilder!(
+                ctx,
+                List<Attachment>.unmodifiable(_attachments),
+                onAttachments,
+              );
+              if (footer == null) {
+                return const SizedBox.shrink();
+              }
+              return Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: footer,
+              );
+            },
+          ),
       ],
     ),
   );

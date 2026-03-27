@@ -62,3 +62,12 @@ typedef AttachmentActionBarBuilder = Widget Function(
   void Function(Iterable<Attachment>) onAttachments,
   Iterable<Attachment> currentAttachments,
 );
+
+/// Optional region below the composer's text row (e.g. tool affordances).
+///
+/// Return `null` to omit the footer for this build.
+typedef ComposerFooterBuilder = Widget? Function(
+  BuildContext context,
+  List<Attachment> draftAttachments,
+  void Function(Iterable<Attachment>) onAttachments,
+);
