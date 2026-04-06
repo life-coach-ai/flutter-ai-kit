@@ -220,7 +220,11 @@ class _ChatInputState extends State<ChatInput> {
               _chatStyle?.attachmentsStyle ??
               AttachmentsStyle.defaultStyle(),
         ),
-        if (_attachments.isNotEmpty) const SizedBox(height: 6),
+        if (hasAnyComposerVisibleAttachments(
+          _attachments,
+          _chatStyle?.attachmentsStyle,
+        ))
+          const SizedBox(height: 6),
         ValueListenableBuilder(
           valueListenable: _textController,
           builder:

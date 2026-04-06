@@ -39,12 +39,16 @@ class AttachmentsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final resolvedStyle = AttachmentsStyle.resolve(style);
 
+    final visible = attachments
+        .where((a) => isAttachmentVisibleInComposer(a, style))
+        .toList();
+
     AttachmentItemStyle? override;
-    if (attachments.isNotEmpty) {
-      final first = attachments.first;
+    if (visible.isNotEmpty) {
+      final first = visible.first;
       if (first is CustomAttachment) {
         final customType = first.customType;
-        final allSameType = attachments.every(
+        final allSameType = visible.every(
           (a) => a is CustomAttachment && a.customType == customType,
         );
         if (allSameType) {
@@ -54,30 +58,32 @@ class AttachmentsView extends StatelessWidget {
     }
 
     final listHeight = override?.listHeight ?? resolvedStyle.listHeight ?? 0;
-    final listPadding =
-        override?.listPadding ?? resolvedStyle.listPadding ?? EdgeInsets.zero;
+    final listPadding = visible.isNotEmpty
+        ? (override?.listPadding ??
+            resolvedStyle.listPadding ??
+            EdgeInsets.zero)
+        : EdgeInsets.zero;
     final itemHeight = override?.itemHeight ?? resolvedStyle.itemHeight ?? 0;
     final itemPadding =
         override?.itemPadding ?? resolvedStyle.itemPadding ?? EdgeInsets.zero;
 
     return Container(
-      height: attachments.isNotEmpty ? listHeight : 0,
+      height: visible.isNotEmpty ? listHeight : 0,
       padding: listPadding,
-      child:
-          attachments.isNotEmpty
-              ? ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  for (final a in attachments)
-                    RemovableAttachment(
-                      attachment: a,
-                      onRemove: onRemove,
-                      itemHeight: itemHeight,
-                      itemPadding: itemPadding,
-                    ),
-                ],
-              )
-              : const SizedBox(),
+      child: visible.isNotEmpty
+          ? ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                for (final a in visible)
+                  RemovableAttachment(
+                    attachment: a,
+                    onRemove: onRemove,
+                    itemHeight: itemHeight,
+                    itemPadding: itemPadding,
+                  ),
+              ],
+            )
+          : const SizedBox(),
     );
   }
 }

@@ -4,6 +4,8 @@
 
 import 'package:flutter/widgets.dart';
 
+import '../providers/interface/attachments.dart';
+
 /// Style overrides for a specific attachment type.
 @immutable
 class AttachmentItemStyle {
@@ -15,6 +17,7 @@ class AttachmentItemStyle {
     this.messageItemHeight,
     this.messageItemWidth,
     this.messageItemVisible,
+    this.composerItemVisible,
   });
 
   final double? listHeight;
@@ -24,6 +27,13 @@ class AttachmentItemStyle {
   final double? messageItemHeight;
   final double? messageItemWidth;
   final bool? messageItemVisible;
+
+  /// When `false`, this custom type is omitted from the composer attachment
+  /// strip (no chip and no remove control). The attachment remains in the
+  /// draft and is still sent with the message.
+  ///
+  /// Defaults to visible when omitted (same as `true`).
+  final bool? composerItemVisible;
 }
 
 /// Style for the attachment list and items in the chat input.
@@ -104,4 +114,33 @@ class AttachmentsStyle {
 
   /// Optional size overrides keyed by CustomAttachment.customType.
   final Map<String, AttachmentItemStyle>? customTypeOverrides;
+}
+
+/// Whether [attachment] should be shown in the composer's attachment strip,
+/// given resolved [AttachmentsStyle.customTypeOverrides].
+///
+/// Non-[CustomAttachment] values are always shown.
+bool isAttachmentVisibleInComposer(
+  Attachment attachment,
+  AttachmentsStyle? style,
+) {
+  if (attachment is! CustomAttachment) {
+    return true;
+  }
+  final resolved = AttachmentsStyle.resolve(style);
+  final override = resolved.customTypeOverrides?[attachment.customType];
+  return override?.composerItemVisible ?? true;
+}
+
+/// Whether [attachments] contains at least one item shown in the composer strip.
+bool hasAnyComposerVisibleAttachments(
+  Iterable<Attachment> attachments,
+  AttachmentsStyle? style,
+) {
+  for (final a in attachments) {
+    if (isAttachmentVisibleInComposer(a, style)) {
+      return true;
+    }
+  }
+  return false;
 }
