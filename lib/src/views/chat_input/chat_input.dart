@@ -17,6 +17,7 @@ import '../attachment_action_bar_builder.dart'
     show AttachmentActionBarBuilder, ComposerFooterBuilder;
 import 'attachments_action_bar.dart';
 import 'attachments_view.dart';
+import 'composer_draft_controller.dart';
 import 'input_button.dart';
 import 'input_state.dart';
 import 'text_or_audio_input.dart';
@@ -47,6 +48,7 @@ class ChatInput extends StatefulWidget {
     this.autofocus = true,
     this.attachmentActionBarBuilder,
     this.composerFooterBuilder,
+    this.draftController,
     super.key,
   }) : assert(
          !(onCancelMessage != null && onCancelStt != null),
@@ -103,6 +105,10 @@ class ChatInput extends StatefulWidget {
   /// Optional widget below the text/send row.
   final ComposerFooterBuilder? composerFooterBuilder;
 
+  /// Optional bridge for mutating draft attachments from outside this widget,
+  /// e.g. inline actions in a custom [ResponseBuilder].
+  final ComposerDraftController? draftController;
+
   @override
   State<ChatInput> createState() => _ChatInputState();
 }
@@ -146,11 +152,32 @@ class _ChatInputState extends State<ChatInput> {
     _viewModel = ChatViewModelProvider.of(context);
     _chatStyle = LlmChatViewStyle.resolve(_viewModel!.style);
     _inputStyle = ChatInputStyle.resolve(_viewModel!.style?.chatInputStyle);
+    _bindDraftController();
+  }
+
+  void _bindDraftController() {
+    final c = widget.draftController;
+    if (c == null) {
+      return;
+    }
+    c.bind(
+      addAll: (attachments) => setState(() => _attachments.addAll(attachments)),
+      removeWhere: (test) => setState(() => _attachments.removeWhere(test)),
+      snapshot: () => List<Attachment>.from(_attachments),
+    );
+  }
+
+  void _notifyDraftController() {
+    widget.draftController?.notifyDraftChanged();
   }
 
   @override
   void didUpdateWidget(ChatInput oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (oldWidget.draftController != widget.draftController) {
+      oldWidget.draftController?.clearBinding();
+      _bindDraftController();
+    }
     if (widget.initialMessage != null) {
       // Load the initial message's text and attachments when:
       // 1. Starting an edit operation (user clicked edit on a previous message)
@@ -160,17 +187,20 @@ class _ChatInputState extends State<ChatInput> {
       _textController.text = widget.initialMessage!.text ?? '';
       _attachments.clear();
       _attachments.addAll(widget.initialMessage!.attachments);
+      _notifyDraftController();
     } else if (oldWidget.initialMessage != null) {
       // Clear both text and attachments when initialMessage becomes null
       // This happens when the user cancels an edit operation, ensuring
       // the input field returns to a clean state
       _textController.clear();
       _attachments.clear();
+      _notifyDraftController();
     }
   }
 
   @override
   void dispose() {
+    widget.draftController?.clearBinding();
     _textController.dispose();
     _waveController.dispose();
     _focusNode.dispose();
@@ -286,6 +316,7 @@ class _ChatInputState extends State<ChatInput> {
 
     widget.onSendMessage(text, List.from(_attachments));
     _attachments.clear();
+    _notifyDraftController();
     _textController.clear();
     _focusNode.requestFocus();
   }
@@ -319,8 +350,11 @@ class _ChatInputState extends State<ChatInput> {
   void onAttachments(Iterable<Attachment> attachments) {
     assert(_viewModel!.enableAttachments);
     setState(() => _attachments.addAll(attachments));
+    _notifyDraftController();
   }
 
-  void onRemoveAttachment(Attachment attachment) =>
-      setState(() => _attachments.remove(attachment));
+  void onRemoveAttachment(Attachment attachment) {
+    setState(() => _attachments.remove(attachment));
+    _notifyDraftController();
+  }
 }

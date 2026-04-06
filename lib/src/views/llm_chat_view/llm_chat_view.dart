@@ -22,6 +22,7 @@ import '../attachment_action_bar_builder.dart'
 import '../attachment_view_registry.dart';
 import '../chat_history_view.dart';
 import '../chat_input/chat_input.dart';
+import '../chat_input/composer_draft_controller.dart';
 import '../response_builder.dart';
 import 'llm_response.dart';
 
@@ -103,6 +104,7 @@ class LlmChatView extends StatefulWidget {
     this.autofocus,
     this.attachmentActionBarBuilder,
     this.composerFooterBuilder,
+    this.composerDraftController,
     this.attachmentViewRegistry,
     super.key,
   }) : viewModel = ChatViewModel(
@@ -193,6 +195,10 @@ class LlmChatView extends StatefulWidget {
 
   /// Optional builder for UI below the composer's text/send row.
   final ComposerFooterBuilder? composerFooterBuilder;
+
+  /// Optional bridge to read and mutate draft attachments from outside
+  /// [ChatInput] (e.g. inline tool toggles in a [ResponseBuilder]).
+  final ComposerDraftController? composerDraftController;
 
   /// Optional registry for custom attachment view builders.
   ///
@@ -294,6 +300,7 @@ class _LlmChatViewState extends State<LlmChatView>
                             widget.attachmentActionBarBuilder,
                         composerFooterBuilder:
                             widget.composerFooterBuilder,
+                        draftController: widget.composerDraftController,
                       ),
                     ),
                   ],

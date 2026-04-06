@@ -20,4 +20,5 @@ export 'src/providers/providers.dart';
 export 'src/styles/styles.dart';
 export 'src/views/attachment_action_bar_builder.dart';
 export 'src/views/attachment_view_registry.dart';
+export 'src/views/chat_input/composer_draft_controller.dart';
 export 'src/views/llm_chat_view/llm_chat_view.dart';
