@@ -19,6 +19,7 @@ class LlmMessageStyle {
     this.iconDecoration,
     this.decoration,
     this.markdownStyle,
+    this.showLeadingIcon = true,
     this.maxWidth = 600.0,
     this.minWidth = 300.0,
     this.flex = 6,
@@ -52,6 +53,7 @@ class LlmMessageStyle {
       iconDecoration: style?.iconDecoration ?? defaultStyle.iconDecoration,
       markdownStyle: style?.markdownStyle ?? defaultStyle.markdownStyle,
       decoration: style?.decoration ?? defaultStyle.decoration,
+      showLeadingIcon: style?.showLeadingIcon ?? defaultStyle.showLeadingIcon,
       maxWidth: style?.maxWidth ?? defaultStyle.maxWidth,
       minWidth: style?.minWidth ?? defaultStyle.minWidth,
       flex: style?.flex ?? defaultStyle.flex,
@@ -110,6 +112,7 @@ class LlmMessageStyle {
     Color? iconColor,
     BoxDecoration? iconDecoration,
     MarkdownStyleSheet? markdownStyle,
+    bool? showLeadingIcon,
     double? maxWidth,
     double? minWidth,
     int? flex,
@@ -122,6 +125,7 @@ class LlmMessageStyle {
       iconColor: iconColor ?? this.iconColor,
       iconDecoration: iconDecoration ?? this.iconDecoration,
       markdownStyle: markdownStyle ?? this.markdownStyle,
+      showLeadingIcon: showLeadingIcon ?? this.showLeadingIcon,
       maxWidth: maxWidth ?? this.maxWidth,
       minWidth: minWidth ?? this.minWidth,
       flex: flex ?? this.flex,
@@ -144,6 +148,10 @@ class LlmMessageStyle {
 
   /// The markdown style sheet for LLM messages.
   final MarkdownStyleSheet? markdownStyle;
+
+  /// When false, the LLM avatar icon is omitted and the message bubble extends
+  /// into that horizontal space (no leading inset).
+  final bool showLeadingIcon;
 
   /// The maximum width of the message bubble.
   final double maxWidth;

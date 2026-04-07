@@ -51,6 +51,7 @@ UserMessageStyle _darkUserMessageStyle() {
 LlmMessageStyle _darkLlmMessageStyle() {
   final style = LlmMessageStyle.defaultStyle();
   return LlmMessageStyle(
+    showLeadingIcon: style.showLeadingIcon,
     icon: style.icon,
     iconColor: _invertColor(style.iconColor),
     // inversion doesn't look great here

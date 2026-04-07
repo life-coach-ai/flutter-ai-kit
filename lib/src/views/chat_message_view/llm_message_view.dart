@@ -42,6 +42,7 @@ class LlmMessageView extends StatelessWidget {
           final text = message.text;
           final chatStyle = LlmChatViewStyle.resolve(viewModel.style);
           final llmStyle = LlmMessageStyle.resolve(chatStyle.llmMessageStyle);
+          final showLeadingIcon = llmStyle.showLeadingIcon;
 
           return Flexible(
             flex: llmStyle.flex,
@@ -53,19 +54,20 @@ class LlmMessageView extends StatelessWidget {
               margin: llmStyle.margin,
               child: Stack(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Container(
-                      height: 20,
-                      width: 20,
-                      decoration: llmStyle.iconDecoration,
-                      child: Icon(
-                        llmStyle.icon,
-                        color: llmStyle.iconColor,
-                        size: 12,
+                  if (showLeadingIcon)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Container(
+                        height: 20,
+                        width: 20,
+                        decoration: llmStyle.iconDecoration,
+                        child: Icon(
+                          llmStyle.icon,
+                          color: llmStyle.iconColor,
+                          size: 12,
+                        ),
                       ),
                     ),
-                  ),
                   HoveringButtons(
                     isUserMessage: false,
                     chatStyle: chatStyle,
@@ -73,7 +75,7 @@ class LlmMessageView extends StatelessWidget {
                     child: Container(
                       width: double.infinity,
                       decoration: llmStyle.decoration,
-                      margin: const EdgeInsets.only(left: 28),
+                      margin: EdgeInsets.only(left: showLeadingIcon ? 28 : 0),
                       padding: llmStyle.padding,
                       child:
                           text == null
