@@ -315,6 +315,7 @@ class _LlmChatViewState extends State<LlmChatView>
     String prompt,
     Iterable<Attachment> attachments,
   ) async {
+    final editedUserMessageId = _initialMessage?.id;
     _initialMessage = null;
     _associatedResponse = null;
 
@@ -324,7 +325,11 @@ class _LlmChatViewState extends State<LlmChatView>
         widget.viewModel.provider.sendMessageStream;
 
     _pendingPromptResponse = LlmResponse(
-      stream: sendMessageStream(prompt, attachments: attachments),
+      stream: sendMessageStream(
+        prompt,
+        attachments: attachments,
+        editedUserMessageId: editedUserMessageId,
+      ),
       // update during the streaming response input so that the end-user can see
       // the response as it streams in
       onUpdate: (_) => setState(() {}),

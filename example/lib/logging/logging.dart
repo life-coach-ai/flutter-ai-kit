@@ -43,6 +43,7 @@ class ChatPage extends StatelessWidget {
   Stream<String> _logMessage(
     String prompt, {
     required Iterable<Attachment> attachments,
+    String? editedUserMessageId,
   }) async* {
     // log the message and attachments
     debugPrint('# Sending Message');
@@ -53,6 +54,7 @@ class ChatPage extends StatelessWidget {
     final response = _provider.sendMessageStream(
       prompt,
       attachments: attachments,
+      editedUserMessageId: editedUserMessageId,
     );
 
     // log the response

@@ -27,7 +27,13 @@ class ChatMessage {
     required this.origin,
     required this.text,
     required this.attachments,
+    this.id,
   }) : assert(origin.isUser && text != null && text.isNotEmpty || origin.isLlm);
+
+  /// Firestore `history` subcollection document id for this message (e.g. `"005"`), if loaded from persistence.
+  ///
+  /// Null for messages not yet written or purely local rows.
+  final String? id;
 
   /// Converts a JSON map representation to a [ChatMessage].
   ///
@@ -43,6 +49,7 @@ class ChatMessage {
   factory ChatMessage.fromJson(Map<String, dynamic> map) => ChatMessage(
     origin: MessageOrigin.values.byName(map['origin'] as String),
     text: map['text'] as String,
+    id: map['id'] as String?,
     attachments: [
       for (final attachment in map['attachments'] as List<dynamic>)
         switch (attachment['type'] as String) {
@@ -82,11 +89,16 @@ class ChatMessage {
   ///
   /// [text] is the content of the user's message.
   /// [attachments] are any files or media the user has attached to the message.
-  factory ChatMessage.user(String text, Iterable<Attachment> attachments) =>
+  factory ChatMessage.user(
+    String text,
+    Iterable<Attachment> attachments, {
+    String? id,
+  }) =>
       ChatMessage(
         origin: MessageOrigin.user,
         text: text,
         attachments: attachments,
+        id: id,
       );
 
   /// Text content of the message.
@@ -108,6 +120,7 @@ class ChatMessage {
       'ChatMessage('
       'origin: $origin, '
       'text: $text, '
+      'id: $id, '
       'attachments: $attachments'
       ')';
 
@@ -125,6 +138,7 @@ class ChatMessage {
   Map<String, dynamic> toJson() => {
     'origin': origin.name,
     'text': text,
+    if (id != null) 'id': id,
     'attachments': [
       for (final attachment in attachments)
         {

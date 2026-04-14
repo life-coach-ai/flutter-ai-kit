@@ -51,6 +51,7 @@ class EchoProvider extends LlmProvider with ChangeNotifier {
   Stream<String> sendMessageStream(
     String prompt, {
     Iterable<Attachment> attachments = const [],
+    String? editedUserMessageId,
   }) async* {
     final userMessage = ChatMessage.user(prompt, attachments);
     final llmMessage = ChatMessage.llm();

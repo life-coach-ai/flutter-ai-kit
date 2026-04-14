@@ -43,6 +43,7 @@ class ChatPage extends StatelessWidget {
   Stream<String> _imageUploader(
     String prompt, {
     required Iterable<Attachment> attachments,
+    String? editedUserMessageId,
   }) async* {
     List<Attachment> newAttachments = [];
     for (final attachment in attachments) {
@@ -64,6 +65,10 @@ class ChatPage extends StatelessWidget {
     }
 
     // forward the message on to the provider using the new attachments
-    yield* _provider.sendMessageStream(prompt, attachments: newAttachments);
+    yield* _provider.sendMessageStream(
+      prompt,
+      attachments: newAttachments,
+      editedUserMessageId: editedUserMessageId,
+    );
   }
 }
