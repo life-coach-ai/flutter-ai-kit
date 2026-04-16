@@ -82,8 +82,8 @@ class ChatMessage {
   /// Factory constructor for creating an LLM-originated message.
   ///
   /// Creates a message with an empty text content and no attachments.
-  factory ChatMessage.llm() =>
-      ChatMessage(origin: MessageOrigin.llm, text: null, attachments: []);
+  factory ChatMessage.llm({String? id}) =>
+      ChatMessage(origin: MessageOrigin.llm, text: null, attachments: [], id: id);
 
   /// Factory constructor for creating a user-originated message.
   ///
