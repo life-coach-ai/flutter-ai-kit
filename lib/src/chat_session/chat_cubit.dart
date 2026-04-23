@@ -209,8 +209,6 @@ class ChatCubit extends Cubit<ChatState> {
       return;
     }
 
-    _repository.replaceSessionMessages(list);
-
     emit(
       state.copyWith(
         composerInitialMessage: userMessage,
@@ -220,21 +218,11 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   void _cancelEdit() {
-    final user = state.composerInitialMessage;
-    final assistant = state.pendingEditAssistantCopy;
-    if (user == null || assistant == null) {
-      return;
-    }
-    final merged = [...state.visibleMessages, user, assistant];
-    _repository.replaceSessionMessages(merged);
-    emit(
-      state.copyWith(
-        composerInitialMessage: null,
-        pendingEditAssistantCopy: null,
-        visibleMessages:
-            List<ChatMessage>.from(_repository.readSnapshot().messages),
-      ),
-    );
+    //Messages are stored in firebase, read from history snapshot.
+    emit(state.copyWith(
+      composerInitialMessage: null,
+      pendingEditAssistantCopy: null,
+    ));
   }
 
   Future<void> _translateStt(
@@ -246,7 +234,7 @@ class ChatCubit extends Cubit<ChatState> {
     final converter = _speechToText;
     final stream =
         converter?.call(file) ??
-        _repository.generateStream(
+        _repository.sendMessageStream(
           _transcriptionPrompt,
           attachments: [
             await FileAttachment.fromFile(file),

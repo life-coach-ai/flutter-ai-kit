@@ -16,23 +16,14 @@ abstract class LlmChatSessionRepository {
   /// Emits [readSnapshot] immediately on listen, then on each domain change.
   Stream<HistorySnapshot> watchHistory();
 
-  /// Replaces stored session messages (e.g. edit flow trimming).
-  void replaceSessionMessages(Iterable<ChatMessage> messages);
-
   Stream<String> sendMessageStream(
     String prompt, {
     Iterable<Attachment> attachments = const [],
+    List<SelectedChatTool>? selectedChatTools = const [],
     String? editedUserMessageId,
   });
 
-  Stream<String> generateStream(
-    String prompt, {
-    Iterable<Attachment> attachments = const [],
-  });
-
   Map<String, dynamic>? metadataForMessage(int index);
-
-  void setRequestedTools(List<SelectedChatTool>? tools);
 
   Future<Map<String, dynamic>> executeToolAsync({
     required String toolId,
