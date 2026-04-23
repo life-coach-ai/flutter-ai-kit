@@ -7,8 +7,8 @@ import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:waveform_recorder/waveform_recorder.dart';
 
-import '../../chat_view_model/chat_view_model.dart';
-import '../../chat_view_model/chat_view_model_provider.dart';
+import '../../chat_view_model/chat_ui_config.dart';
+import '../../chat_view_model/chat_ui_config_provider.dart';
 import '../../dialogs/adaptive_snack_bar/adaptive_snack_bar.dart';
 import '../../providers/interface/attachments.dart';
 import '../../providers/interface/chat_message.dart';
@@ -142,16 +142,16 @@ class _ChatInputState extends State<ChatInput> {
   final _waveController = WaveformRecorderController();
   final _attachments = <Attachment>[];
 
-  ChatViewModel? _viewModel;
+  ChatUiConfig? _config;
   ChatInputStyle? _inputStyle;
   LlmChatViewStyle? _chatStyle;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _viewModel = ChatViewModelProvider.of(context);
-    _chatStyle = LlmChatViewStyle.resolve(_viewModel!.style);
-    _inputStyle = ChatInputStyle.resolve(_viewModel!.style?.chatInputStyle);
+    _config = ChatUiConfigProvider.of(context);
+    _chatStyle = LlmChatViewStyle.resolve(_config!.style);
+    _inputStyle = ChatInputStyle.resolve(_config!.style?.chatInputStyle);
     _bindDraftController();
   }
 
@@ -234,7 +234,7 @@ class _ChatInputState extends State<ChatInput> {
                     (context, child) => Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        if (_viewModel!.enableAttachments)
+                        if (_config!.enableAttachments)
                           Padding(
                             padding: const EdgeInsets.only(bottom: 14),
                             child: widget.attachmentActionBarBuilder != null
@@ -304,7 +304,7 @@ class _ChatInputState extends State<ChatInput> {
     if (widget.onCancelMessage != null) return InputState.canCancelPrompt;
     if (widget.onCancelStt != null) return InputState.canCancelStt;
     if (_textController.text.trim().isEmpty) {
-      return _viewModel!.enableVoiceNotes
+      return _config!.enableVoiceNotes
           ? InputState.canStt
           : InputState.disabled;
     }
@@ -352,7 +352,7 @@ class _ChatInputState extends State<ChatInput> {
   }
 
   void onAttachments(Iterable<Attachment> attachments) {
-    assert(_viewModel!.enableAttachments);
+    assert(_config!.enableAttachments);
     setState(() => _attachments.addAll(attachments));
     _notifyDraftController();
   }

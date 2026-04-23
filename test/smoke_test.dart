@@ -1,33 +1,61 @@
 // Copyright 2024 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_ai_toolkit/flutter_ai_toolkit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('Smoke Test - Echo Provider', (tester) async {
+  testWidgets('Smoke Test - Echo via ChatCubit', (tester) async {
+    final echo = SimpleEchoProvider();
+    final repo = ProviderLlmChatSessionRepository(echo);
+    addTearDown(repo.dispose);
+
     await tester.pumpWidget(
       MaterialApp(
-        home: Scaffold(body: LlmChatView(provider: SimpleEchoProvider())),
+        home: Scaffold(
+          body: BlocProvider(
+            create: (_) => ChatCubit(
+              repository: repo,
+              cancelMessageLabel: 'CANCEL',
+              errorMessageLabel: 'ERROR',
+            ),
+            child: BlocBuilder<ChatCubit, ChatState>(
+              builder: (context, state) => LlmChatView(
+                config: const ChatUiConfig(
+                  style: null,
+                  suggestions: [],
+                  welcomeMessage: null,
+                  responseBuilder: null,
+                  messageSender: null,
+                  speechToText: null,
+                  enableAttachments: true,
+                  enableVoiceNotes: true,
+                  attachmentActionBarBuilder: null,
+                  composerFooterBuilder: null,
+                  attachmentViewRegistry: null,
+                ),
+                state: state,
+                onIntent: context.read<ChatCubit>().submit,
+              ),
+            ),
+          ),
+        ),
       ),
     );
 
-    // Find the text field and enter a message
     final textField = find.byWidgetPredicate((widget) => widget is TextField);
     expect(textField, findsOneWidget);
     await tester.enterText(textField, 'Hello, World!');
     await tester.pump();
 
-    // Find the submit button by its tooltip and tap it
     final submitButton = find.byTooltip('Submit Message');
     expect(submitButton, findsOneWidget);
     await tester.tap(submitButton);
     await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
 
-    // Check for the response
     expect(
       find.byWidgetPredicate(
         (widget) =>
@@ -39,9 +67,10 @@ void main() {
   });
 }
 
+/// Same behaviour as the previous smoke [LlmProvider] stub.
 class SimpleEchoProvider extends LlmProvider with ChangeNotifier {
   SimpleEchoProvider({Iterable<ChatMessage>? history})
-    : _history = List<ChatMessage>.from(history ?? []);
+      : _history = List<ChatMessage>.from(history ?? []);
 
   final List<ChatMessage> _history;
 
@@ -76,8 +105,9 @@ class SimpleEchoProvider extends LlmProvider with ChangeNotifier {
 
   @override
   set history(Iterable<ChatMessage> history) {
-    _history.clear();
-    _history.addAll(history);
+    _history
+      ..clear()
+      ..addAll(history);
     notifyListeners();
   }
 }

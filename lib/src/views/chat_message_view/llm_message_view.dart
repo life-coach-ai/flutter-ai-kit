@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../chat_view_model/chat_view_model_client.dart';
+import '../../chat_view_model/chat_ui_config_client.dart';
 import '../../providers/interface/chat_message.dart';
 import '../../styles/llm_chat_view_style.dart';
 import '../../styles/llm_message_style.dart';
@@ -37,10 +37,10 @@ class LlmMessageView extends StatelessWidget {
   Widget build(BuildContext context) => Row(
     children: [
       // const Spacer(flex: 1,),
-      ChatViewModelClient(
-        builder: (context, viewModel, child) {
+      ChatUiConfigClient(
+        builder: (context, config, child) {
           final text = message.text;
-          final chatStyle = LlmChatViewStyle.resolve(viewModel.style);
+          final chatStyle = LlmChatViewStyle.resolve(config.style);
           final llmStyle = LlmMessageStyle.resolve(chatStyle.llmMessageStyle);
           final showLeadingIcon = llmStyle.showLeadingIcon;
 
@@ -91,7 +91,7 @@ class LlmMessageView extends StatelessWidget {
                                 chatStyle: chatStyle,
                                 child:
                                     isWelcomeMessage ||
-                                            viewModel.responseBuilder == null
+                                            config.responseBuilder == null
                                         ? MarkdownBody(
                                           data: text,
                                           selectable: false,
@@ -102,7 +102,7 @@ class LlmMessageView extends StatelessWidget {
                                             }
                                           },
                                         )
-                                        : viewModel.responseBuilder!(
+                                        : config.responseBuilder!(
                                           context,
                                           text,
                                         ),

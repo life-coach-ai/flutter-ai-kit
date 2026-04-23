@@ -10,6 +10,8 @@ import 'chat_message.dart';
 
 /// An abstract class representing a Language Model (LLM) provider.
 ///
+/// Prefer `ChatCubit` + `LlmChatSessionRepository` for new integrations (see kit exports).
+///
 /// This class defines the interface for interacting with different LLM
 /// services. Implementations of this class should provide the logic for
 /// generating text responses based on input prompts and optional attachments.

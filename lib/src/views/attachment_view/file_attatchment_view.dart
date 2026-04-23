@@ -4,7 +4,7 @@
 
 import 'package:flutter/widgets.dart';
 
-import '../../chat_view_model/chat_view_model_client.dart';
+import '../../chat_view_model/chat_ui_config_client.dart';
 import '../../providers/interface/attachments.dart';
 import '../../styles/file_attachment_style.dart';
 
@@ -24,10 +24,10 @@ class FileAttachmentView extends StatelessWidget {
   final Attachment attachment;
 
   @override
-  Widget build(BuildContext context) => ChatViewModelClient(
-    builder: (context, viewModel, child) {
+  Widget build(BuildContext context) => ChatUiConfigClient(
+    builder: (context, config, child) {
       final attachmentStyle = FileAttachmentStyle.resolve(
-        viewModel.style?.fileAttachmentStyle,
+        config.style?.fileAttachmentStyle,
       );
 
       return Container(

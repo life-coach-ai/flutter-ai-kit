@@ -12,7 +12,7 @@ import 'package:flutter_ai_toolkit/src/dialogs/url_input_dialog.dart';
 import 'package:flutter_ai_toolkit/src/utility.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../chat_view_model/chat_view_model_client.dart';
+import '../../chat_view_model/chat_ui_config_client.dart';
 import '../../dialogs/adaptive_snack_bar/adaptive_snack_bar.dart';
 import '../../platform_helper/platform_helper.dart';
 import '../../providers/interface/attachments.dart';
@@ -47,9 +47,9 @@ class _AttachmentActionBarState extends State<AttachmentActionBar> {
   }
 
   @override
-  Widget build(BuildContext context) => ChatViewModelClient(
-    builder: (context, viewModel, child) {
-      final chatStyle = LlmChatViewStyle.resolve(viewModel.style);
+  Widget build(BuildContext context) => ChatUiConfigClient(
+    builder: (context, config, child) {
+      final chatStyle = LlmChatViewStyle.resolve(config.style);
       final menuItems = [
         if (_canCamera)
           MenuItemButton(

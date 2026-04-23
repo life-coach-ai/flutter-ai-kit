@@ -4,7 +4,7 @@
 
 import 'package:flutter/widgets.dart';
 
-import '../../chat_view_model/chat_view_model_client.dart';
+import '../../chat_view_model/chat_ui_config_client.dart';
 import '../../providers/interface/attachments.dart';
 import '../../providers/interface/chat_message.dart';
 import '../../styles/styles.dart';
@@ -41,9 +41,9 @@ class UserMessageView extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 6),
             child: Align(
               alignment: Alignment.topRight,
-              child: ChatViewModelClient(
-                builder: (context, viewModel, _) {
-                  final chatStyle = LlmChatViewStyle.resolve(viewModel.style);
+              child: ChatUiConfigClient(
+                builder: (context, config, _) {
+                  final chatStyle = LlmChatViewStyle.resolve(config.style);
                   final attachmentsStyle = AttachmentsStyle.resolve(
                     chatStyle.attachmentsStyle,
                   );
@@ -78,7 +78,7 @@ class UserMessageView extends StatelessWidget {
                     width: width,
                     child: AttachmentView(
                       attachment,
-                      registry: viewModel.attachmentViewRegistry,
+                      registry: config.attachmentViewRegistry,
                     ),
                   );
                 },
@@ -86,10 +86,10 @@ class UserMessageView extends StatelessWidget {
             ),
           ),
       ],
-      ChatViewModelClient(
-        builder: (context, viewModel, child) {
+      ChatUiConfigClient(
+        builder: (context, config, child) {
           final text = message.text!;
-          final chatStyle = LlmChatViewStyle.resolve(viewModel.style);
+          final chatStyle = LlmChatViewStyle.resolve(config.style);
           final userStyle = UserMessageStyle.resolve(
             chatStyle.userMessageStyle,
           );

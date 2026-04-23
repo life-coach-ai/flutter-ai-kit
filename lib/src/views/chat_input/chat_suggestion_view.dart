@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import '../../chat_view_model/chat_view_model_client.dart';
+import '../../chat_view_model/chat_ui_config_client.dart';
 import '../../styles/suggestion_style.dart';
 
 /// A widget that displays a list of chat suggestions.
@@ -28,10 +28,10 @@ class ChatSuggestionsView extends StatelessWidget {
   final void Function(String suggestion) onSelectSuggestion;
 
   @override
-  Widget build(BuildContext context) => ChatViewModelClient(
-    builder: (context, viewModel, child) {
+  Widget build(BuildContext context) => ChatUiConfigClient(
+    builder: (context, config, child) {
       final suggestionStyle = SuggestionStyle.resolve(
-        viewModel.style?.suggestionStyle,
+        config.style?.suggestionStyle,
       );
       return Wrap(
         children: [

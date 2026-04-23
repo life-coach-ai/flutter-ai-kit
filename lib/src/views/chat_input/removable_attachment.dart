@@ -6,7 +6,7 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 
-import '../../chat_view_model/chat_view_model_client.dart';
+import '../../chat_view_model/chat_ui_config_client.dart';
 import '../../dialogs/adaptive_dialog.dart';
 import '../../dialogs/image_preview_dialog.dart';
 import '../../providers/interface/attachments.dart';
@@ -45,8 +45,8 @@ class RemovableAttachment extends StatelessWidget {
   final EdgeInsets itemPadding;
 
   @override
-  Widget build(BuildContext context) => ChatViewModelClient(
-    builder: (context, viewModel, _) => Stack(
+  Widget build(BuildContext context) => ChatUiConfigClient(
+    builder: (context, config, _) => Stack(
       children: [
         GestureDetector(
           onTap:
@@ -58,15 +58,15 @@ class RemovableAttachment extends StatelessWidget {
             height: itemHeight,
             child: AttachmentView(
               attachment,
-              registry: viewModel.attachmentViewRegistry,
+              registry: config.attachmentViewRegistry,
             ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(2),
-          child: ChatViewModelClient(
-            builder: (context, viewModel, child) {
-              final chatStyle = LlmChatViewStyle.resolve(viewModel.style);
+          child: ChatUiConfigClient(
+            builder: (context, config, child) {
+              final chatStyle = LlmChatViewStyle.resolve(config.style);
               return ActionButton(
                 style: chatStyle.closeButtonStyle!,
                 size: 20,
