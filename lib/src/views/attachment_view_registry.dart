@@ -26,8 +26,8 @@ typedef AttachmentViewBuilder = Widget Function(
 /// final registry = AttachmentViewRegistry(
 ///   builders: {
 ///     'chat_tool': (context, data) {
-///       final tool = ChatToolAttachment.fromData(data);
-///       return ChatToolAttachmentView(tool: tool);
+///       final intent = ChatToolIntent.fromData(data);
+///       return MyChatToolChip(intent: intent);
 ///     },
 ///   },
 /// );
