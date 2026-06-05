@@ -21,6 +21,7 @@ export 'src/providers/interface/chat_message.dart';
 export 'src/providers/providers.dart';
 export 'src/repositories/assync_tool_execution_repository.dart';
 export 'src/repositories/message_ack.dart';
+export 'src/repositories/model/chat_session.dart';
 export 'src/repositories/model/chat_tool_intent.dart';
 export 'src/repositories/model/persisted_chat_message.dart';
 export 'src/repositories/model/persisted_chat_tool_intent.dart';

@@ -1,19 +1,29 @@
 import 'package:flutter_ai_toolkit/src/repositories/message_ack.dart';
-import 'package:flutter_ai_toolkit/src/session/session_tool_types.dart';
 
+import 'model/chat_session.dart';
 import 'model/persisted_chat_message.dart';
 import 'model/persisted_chat_tool_intent.dart';
 import 'model/tool_execution_intent_request.dart';
 import 'model/user_location.dart';
 
 abstract class PersistentChatSessionRepository {
-  // Watch the chat message history.
-  // /users/{user_id}/chats/{chat_id}/history
-  Stream<List<ChatMessageBase>> watchChatMessageHistory(String chatId);
+  // Watch chat message history.
+  //
+  // Firestore: `users/{user_id}/chat_sessions/{chat_id}/history/{server_uuid}`
+  //
+  // Document id is the message `server_uuid`. Rows are ordered by
+  // `server_timestamp`. Soft-deleted rows (`deleted: true`) are omitted.
+  Stream<List<ChatMessageBase>> watchChatMessageHistory(String chatSessionId);
 
-  // Watch the available tools for the next message.
-  // /users/{user_id}/chats/{chat_id}/available_tools
-  Stream<List<AvailableToolInfo>> watchAvailableTools(String chatId);
+  // Watch the current chat session document.
+  //
+  // Firestore: `users/{user_id}/chat_sessions/{chat_id}` (lcai-core
+  // `chat_session_store`). Emits null when the document is missing or the user
+  // is logged out.
+  //
+  // Per-turn `{tool_id, mandatory}` lists from `/intro/{flavour_id}` or chat
+  // responses are not persisted to Firestore yet.
+  Stream<ChatSession?> watchChatSession(String chatSessionId);
 
   // POST /chat-sessions/{chat_session_id}/send-chat-message
   //
@@ -30,7 +40,7 @@ abstract class PersistentChatSessionRepository {
   // server message UUID onward. Asynchronous generation then updates the
   // assistant placeholder via [watchChatMessageHistory].
   Future<MessageAck> sendUserChatMessage({
-    required String chatId,
+    required String chatSessionId,
     required String clientMessageUuid,
     required String userMessageText,
     String? editedMessageUuid,
@@ -46,7 +56,7 @@ abstract class PersistentChatSessionRepository {
   // sending; the backend removes the user message and any in-flight assistant
   // message from history. Removals sync via [watchChatMessageHistory].
   Future<MessageAck> cancelUserChatMessage({
-    required String chatId,
+    required String chatSessionId,
     required String messageUuid,
   });
 }
