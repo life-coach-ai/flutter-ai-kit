@@ -7,6 +7,7 @@
 /// legacy [LlmProvider] implementations (e.g. [EchoProvider]).
 library;
 
+export 'package:cross_file/cross_file.dart' show XFile;
 export 'src/chat_session/chat_cubit.dart';
 export 'src/chat_session/chat_intent.dart';
 export 'src/chat_session/chat_message_mapper.dart';
