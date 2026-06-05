@@ -24,6 +24,7 @@ export 'src/repositories/message_ack.dart';
 export 'src/repositories/model/chat_tool_intent.dart';
 export 'src/repositories/model/persisted_chat_message.dart';
 export 'src/repositories/model/persisted_chat_tool_intent.dart';
+export 'src/repositories/model/tool_execution_intent_request.dart';
 export 'src/repositories/model/user_location.dart';
 export 'src/repositories/persistent_chat_session_repository.dart';
 export 'src/session/active_tool_execution_summary.dart';

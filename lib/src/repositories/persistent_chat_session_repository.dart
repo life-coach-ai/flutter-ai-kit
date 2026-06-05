@@ -1,9 +1,10 @@
 import 'package:flutter_ai_toolkit/src/repositories/message_ack.dart';
 import 'package:flutter_ai_toolkit/src/session/session_tool_types.dart';
 
-import '../providers/interface/attachments.dart';
-import 'model/chat_tool_intent.dart';
 import 'model/persisted_chat_message.dart';
+import 'model/persisted_chat_tool_intent.dart';
+import 'model/tool_execution_intent_request.dart';
+import 'model/user_location.dart';
 
 abstract class PersistentChatSessionRepository {
   // Watch the chat message history.
@@ -14,28 +15,38 @@ abstract class PersistentChatSessionRepository {
   // /users/{user_id}/chats/{chat_id}/available_tools
   Stream<List<AvailableToolInfo>> watchAvailableTools(String chatId);
 
-  // Send user message to the backend via /chat endpoint.
-  // The backend stores the user message and return synchronously MessageAck
-  // - If editedMessageId is provided, the backend replaces the message with the new one.
-  // The stored user message appear on frontend via watchChatMessageHistory stream.
-  // Asynchronnous backend processing after:
-  // The backend generates the assistant message -> appear on frontend via watchChatMessageHistory stream.
+  // POST /chat-sessions/{chat_session_id}/send-chat-message
+  //
+  // Request body mirrors lcai-core `SendChatMessageRequest`:
+  // - client_message_uuid, user_message_text, user_location,
+  //   chat_tool_intents, active_tool_execution_intents,
+  //   edited_message_id, message_version
+  //
+  // The backend persists the user message and assistant placeholder, then
+  // returns `SendChatMessageResponse` as [MessageAck]. The stored user message
+  // appears on the frontend via [watchChatMessageHistory].
+  //
+  // If [editedMessageUuid] is provided, the backend replaces history from that
+  // server message UUID onward. Asynchronous generation then updates the
+  // assistant placeholder via [watchChatMessageHistory].
   Future<MessageAck> sendUserChatMessage({
     required String chatId,
+    required String clientMessageUuid,
     required String userMessageText,
     String? editedMessageUuid,
-    List<Attachment> attachments = const [],
-    List<ChatToolIntent> chatToolIntents = const [],
+    UserLocation? userLocation,
+    List<PersistedChatToolIntent> chatToolIntents = const [],
+    List<ToolExecutionIntentRequest> activeToolExecutionIntents = const [],
+    int messageVersion = 1,
   });
 
-  // When the user stops sending the message, 
-  // the backend is notified about that via /cancel endpoint.
-  // the backend removes the user message from the history.
-  // if there was an assistant message generated, it is removed from the history.
-  // All the removal is synchronised via watchChatMessageHistory stream.
+  // Cancel endpoint is not implemented in lcai-core yet.
+  //
+  // Intended behaviour once available: notify the backend that the user stopped
+  // sending; the backend removes the user message and any in-flight assistant
+  // message from history. Removals sync via [watchChatMessageHistory].
   Future<MessageAck> cancelUserChatMessage({
     required String chatId,
     required String messageUuid,
   });
 }
-
