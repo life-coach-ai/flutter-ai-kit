@@ -178,7 +178,6 @@ class _SuggestionChatHarnessState extends State<_SuggestionChatHarness> {
                 welcomeMessage: _welcome,
                 responseBuilder: null,
                 messageSender: null,
-                speechToText: null,
                 enableAttachments: true,
                 enableVoiceNotes: true,
                 attachmentActionBarBuilder: null,

@@ -18,7 +18,6 @@ class ChatUiConfig {
     required this.welcomeMessage,
     required this.responseBuilder,
     required this.messageSender,
-    required this.speechToText,
     required this.enableAttachments,
     required this.enableVoiceNotes,
     required this.attachmentActionBarBuilder,
@@ -35,8 +34,6 @@ class ChatUiConfig {
   final ResponseBuilder? responseBuilder;
 
   final LlmStreamGenerator? messageSender;
-
-  final SpeechToTextConverter? speechToText;
 
   final bool enableAttachments;
 
@@ -57,7 +54,6 @@ class ChatUiConfig {
           other.welcomeMessage == welcomeMessage &&
           other.responseBuilder == responseBuilder &&
           other.messageSender == messageSender &&
-          other.speechToText == speechToText &&
           other.enableAttachments == enableAttachments &&
           other.enableVoiceNotes == enableVoiceNotes &&
           other.attachmentActionBarBuilder == attachmentActionBarBuilder &&
@@ -71,7 +67,6 @@ class ChatUiConfig {
         welcomeMessage,
         responseBuilder,
         messageSender,
-        speechToText,
         enableAttachments,
         enableVoiceNotes,
         attachmentActionBarBuilder,

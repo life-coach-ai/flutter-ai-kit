@@ -29,7 +29,6 @@ void main() {
                   welcomeMessage: null,
                   responseBuilder: null,
                   messageSender: null,
-                  speechToText: null,
                   enableAttachments: true,
                   enableVoiceNotes: true,
                   attachmentActionBarBuilder: null,

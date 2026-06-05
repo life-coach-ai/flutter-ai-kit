@@ -24,12 +24,10 @@ class ChatCubit extends Cubit<ChatState> {
     required String cancelMessageLabel,
     required String errorMessageLabel,
     LlmStreamGenerator? messageSender,
-    SpeechToTextConverter? speechToText,
   })  : _repository = repository,
         _cancelMessageLabel = cancelMessageLabel,
         _errorMessageLabel = errorMessageLabel,
         _messageSender = messageSender,
-        _speechToText = speechToText,
         super(ChatCubit._initialFromRepo(repository)) {
     _historySub = repository.watchHistory().listen(
           _onHistorySnapshot,
@@ -41,7 +39,6 @@ class ChatCubit extends Cubit<ChatState> {
   final String _cancelMessageLabel;
   final String _errorMessageLabel;
   final LlmStreamGenerator? _messageSender;
-  final SpeechToTextConverter? _speechToText;
 
   StreamSubscription<HistorySnapshot>? _historySub;
   LlmResponse? _pendingSend;
@@ -231,15 +228,12 @@ class ChatCubit extends Cubit<ChatState> {
   ) async {
     emit(state.copyWith(isTranscribing: true));
 
-    final converter = _speechToText;
-    final stream =
-        converter?.call(file) ??
-        _repository.sendMessageStream(
-          _transcriptionPrompt,
-          attachments: [
-            await FileAttachment.fromFile(file),
-          ],
-        );
+    final stream = _repository.sendMessageStream(
+      _transcriptionPrompt,
+      attachments: [
+        await FileAttachment.fromFile(file),
+      ],
+    );
 
     final buffer = StringBuffer();
     _pendingStt?.cancel();
