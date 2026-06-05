@@ -9,6 +9,9 @@ library;
 
 export 'src/chat_session/chat_cubit.dart';
 export 'src/chat_session/chat_intent.dart';
+export 'src/chat_session/chat_message_mapper.dart';
+export 'src/chat_session/chat_session_bloc.dart';
+export 'src/chat_session/chat_session_event.dart';
 export 'src/chat_session/chat_state.dart';
 export 'src/chat_session/chat_ui_effect.dart';
 export 'src/dialogs/adaptive_dialog.dart';
@@ -28,6 +31,7 @@ export 'src/repositories/model/persisted_chat_tool_intent.dart';
 export 'src/repositories/model/tool_execution_intent_request.dart';
 export 'src/repositories/model/user_location.dart';
 export 'src/repositories/persistent_chat_session_repository.dart';
+export 'src/repositories/transcription_repository.dart';
 export 'src/session/active_tool_execution_summary.dart';
 export 'src/session/history_snapshot.dart';
 export 'src/session/provider_llm_chat_session_repository.dart';

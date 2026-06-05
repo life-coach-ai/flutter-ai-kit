@@ -18,6 +18,7 @@ import 'chat_state.dart';
 import 'chat_ui_effect.dart';
 
 /// Orchestrates chat session UX; aggregates repository snapshots into [ChatState].
+/// DEPRECATED: ChatCubit. To be replaced by ChatSessionBloc.
 class ChatCubit extends Cubit<ChatState> {
   ChatCubit({
     required LlmChatSessionRepository repository,

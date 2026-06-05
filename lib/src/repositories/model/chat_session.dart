@@ -1,3 +1,4 @@
+import '../../session/session_tool_types.dart';
 import 'persisted_model_utils.dart';
 
 enum ChatSessionState {
@@ -15,7 +16,7 @@ class ChatSession {
     required this.title,
     required this.flavourId,
     required this.createdAt,
-    this.availableToolIds = const [],
+    this.availableTools = const [],
     this.activeToolExecutionIds = const [],
     this.state = ChatSessionState.draft,
     this.evolvingIntentState,
@@ -30,7 +31,7 @@ class ChatSession {
         title: json['title'] as String? ?? '',
         flavourId: json['flavour_id'] as String? ?? '',
         createdAt: _parseCreatedAt(json['created_timestamp']),
-        availableToolIds: _stringList(json['available_tool_ids']),
+        availableTools: _parseAvailableTools(json),
         activeToolExecutionIds: _stringList(json['active_tool_execution_ids']),
         state: _parseState(json['session_state'] as String?),
         evolvingIntentState: _mapOrNull(json['evolving_intent_state']),
@@ -39,13 +40,34 @@ class ChatSession {
   final String id;
   final String title;
   final String flavourId;
-  final List<String> availableToolIds;
+
+  /// Tools enabled for this session (`available_tools` from Firestore).
+  final List<AvailableToolInfo> availableTools;
+
+  List<String> get availableToolIds =>
+      availableTools.map((tool) => tool.toolId).toList();
+
   final List<String> activeToolExecutionIds;
   final ChatSessionState state;
   final DateTime createdAt;
 
   /// Opaque evolving-intent payload from backend updates; not parsed further.
   final Map<String, dynamic>? evolvingIntentState;
+
+  static List<AvailableToolInfo> _parseAvailableTools(
+    Map<String, dynamic> json,
+  ) {
+    final toolsRaw = json['available_tools'];
+    if (toolsRaw is! List<dynamic>) {
+      return const [];
+    }
+    return [
+      for (final item in toolsRaw)
+        AvailableToolInfo.fromJson(
+          Map<String, dynamic>.from(item as Map<dynamic, dynamic>),
+        ),
+    ];
+  }
 
   static List<String> _stringList(Object? raw) {
     if (raw is! List<dynamic>) {

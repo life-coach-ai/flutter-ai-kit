@@ -45,6 +45,7 @@ class ProviderLlmChatSessionRepository implements LlmChatSessionRepository {
   Stream<String> sendMessageStream(
     String prompt, {
     Iterable<Attachment> attachments = const [],
+    List<SelectedChatTool>? selectedChatTools = const [],
     String? editedUserMessageId,
   }) =>
       _provider.sendMessageStream(
