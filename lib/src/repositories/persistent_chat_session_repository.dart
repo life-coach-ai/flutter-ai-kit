@@ -2,13 +2,13 @@ import 'package:flutter_ai_toolkit/src/repositories/message_ack.dart';
 import 'package:flutter_ai_toolkit/src/session/session_tool_types.dart';
 
 import '../providers/interface/attachments.dart';
-import '../providers/interface/chat_message.dart';
 import 'model/chat_tool_intent.dart';
+import 'model/persisted_chat_message.dart';
 
 abstract class PersistentChatSessionRepository {
   // Watch the chat message history.
   // /users/{user_id}/chats/{chat_id}/history
-  Stream<List<ChatMessage>> watchChatMessageHistory(String chatId);
+  Stream<List<ChatMessageBase>> watchChatMessageHistory(String chatId);
 
   // Watch the available tools for the next message.
   // /users/{user_id}/chats/{chat_id}/available_tools
