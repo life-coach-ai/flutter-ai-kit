@@ -224,6 +224,74 @@ void main() {
       expect(bloc.state.isTranscribing, isFalse);
       expect(transcriptionRepo.transcribeCalls, 1);
     });
+
+    test('sendMessage forwards chat tool attachments as persisted intents', () async {
+      final chatRepo = FakePersistentChatSessionRepository();
+      final toolRepo = FakeAssyncToolExecutionRepository();
+      final transcriptionRepo = FakeTranscriptionRepository();
+
+      final bloc = ChatSessionBloc(
+        chatSessionId: 'chat-1',
+        chatRepository: chatRepo,
+        toolExecutionRepository: toolRepo,
+        transcriptionRepository: transcriptionRepo,
+        cancelMessageLabel: 'CANCEL',
+        errorMessageLabel: 'ERROR',
+      );
+      addTearDown(bloc.close);
+
+      await bloc.submit(
+        ChatIntent.sendMessage(
+          text: 'run tool',
+          attachments: [
+            CustomAttachment(
+              name: 'qi_men',
+              customType: 'chat_tool',
+              data: ChatToolIntent.fromToolSelection(
+                toolId: 'qi_men',
+                params: const {'calculation_type': 'hour'},
+              ).toData(),
+            ),
+          ],
+        ),
+      );
+      await bloc.stream.firstWhere((state) => !state.isSending);
+
+      expect(chatRepo.sentMessages, hasLength(1));
+      final intents = chatRepo.sentMessages.single.chatToolIntents;
+      expect(intents, hasLength(1));
+      expect(intents.single.toolId, 'qi_men');
+      expect(
+        intents.single.clientIntent,
+        MessageToolClientIntent.toolExecutionRequested,
+      );
+      expect(
+        intents.single.source,
+        ChatToolIntentSource.fromAvailableToolsUi,
+      );
+    });
+  });
+
+  group('attachmentsToPersistedChatToolIntents', () {
+    test('maps inline recommendation intent', () {
+      final intents = attachmentsToPersistedChatToolIntents([
+        CustomAttachment(
+          name: 'yi_jing',
+          customType: 'chat_tool',
+          data: ChatToolIntent.fromToolSelection(
+            toolId: 'yi_jing',
+            params: const {},
+            clientIntent:
+                ChatToolMessageClientIntent.acceptedInlineRecommendation,
+          ).toData(),
+        ),
+      ]);
+
+      expect(intents.single.clientIntent,
+          MessageToolClientIntent.toolRecommendationAccepted);
+      expect(intents.single.source,
+          ChatToolIntentSource.fromInlineToolRecommendationUi);
+    });
   });
 }
 
@@ -270,6 +338,7 @@ class FakePersistentChatSessionRepository
         clientMessageUuid: clientMessageUuid,
         userMessageText: userMessageText,
         editedMessageUuid: editedMessageUuid,
+        chatToolIntents: chatToolIntents,
       ),
     );
     return MessageAck(
@@ -302,11 +371,13 @@ class _SentMessage {
     required this.clientMessageUuid,
     required this.userMessageText,
     this.editedMessageUuid,
+    this.chatToolIntents = const [],
   });
 
   final String clientMessageUuid;
   final String userMessageText;
   final String? editedMessageUuid;
+  final List<PersistedChatToolIntent> chatToolIntents;
 }
 
 class FakeAssyncToolExecutionRepository

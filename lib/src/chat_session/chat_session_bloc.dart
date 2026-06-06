@@ -16,6 +16,7 @@ import '../repositories/transcription_repository.dart';
 import '../session/active_tool_execution_summary.dart';
 import 'chat_intent.dart';
 import 'chat_message_mapper.dart';
+import 'chat_tool_intent_mapper.dart';
 import 'chat_session_event.dart';
 import 'chat_state.dart';
 import 'chat_ui_effect.dart';
@@ -109,6 +110,9 @@ class ChatSessionBloc extends Bloc<ChatSessionEvent, ChatState> {
               text: text,
               editedMessageUuid:
                   editedUserMessageId ?? state.composerInitialMessage?.serverUuid,
+              chatToolIntents: attachmentsToPersistedChatToolIntents(
+                attachments,
+              ),
             ),
           );
         },

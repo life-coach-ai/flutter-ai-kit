@@ -11,6 +11,7 @@ export 'package:cross_file/cross_file.dart' show XFile;
 export 'src/chat_session/chat_cubit.dart';
 export 'src/chat_session/chat_intent.dart';
 export 'src/chat_session/chat_message_mapper.dart';
+export 'src/chat_session/chat_tool_intent_mapper.dart';
 export 'src/chat_session/chat_session_bloc.dart';
 export 'src/chat_session/chat_session_event.dart';
 export 'src/chat_session/chat_state.dart';
