@@ -9,7 +9,7 @@ import 'chat_ui_effect.dart';
 
 part 'chat_state.freezed.dart';
 
-/// UI-oriented snapshot for the chat shell ([ChatCubit] owns assembly).
+/// UI-oriented snapshot for the chat shell ([ChatSessionBloc] owns assembly).
 @freezed
 class ChatState with _$ChatState {
   const factory ChatState({

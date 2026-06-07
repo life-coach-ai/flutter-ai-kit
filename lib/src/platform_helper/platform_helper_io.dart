@@ -22,6 +22,9 @@ import 'package:image_picker/image_picker.dart';
 /// Throws:
 ///   - [FileSystemException] if the file cannot be deleted.
 Future<void> deleteFile(XFile file) async {
+  if (file.path.isEmpty) {
+    return;
+  }
   await File(file.path).delete();
 }
 

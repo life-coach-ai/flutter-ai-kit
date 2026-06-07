@@ -1,10 +1,7 @@
-import 'dart:async' show unawaited;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_ai_toolkit/flutter_ai_toolkit.dart';
 import 'package:flutter_ai_toolkit/src/views/chat_input/chat_suggestion_view.dart';
 import 'package:flutter_ai_toolkit/src/views/chat_text_field.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -119,7 +116,7 @@ void main() {
   });
 }
 
-class _SuggestionChatHarness extends StatefulWidget {
+class _SuggestionChatHarness extends StatelessWidget {
   const _SuggestionChatHarness({
     required this.suggestionsCount,
     this.autofocus,
@@ -128,67 +125,32 @@ class _SuggestionChatHarness extends StatefulWidget {
   final int suggestionsCount;
   final bool? autofocus;
 
-  @override
-  State<_SuggestionChatHarness> createState() =>
-      _SuggestionChatHarnessState();
-}
-
-class _SuggestionChatHarnessState extends State<_SuggestionChatHarness> {
-  late final EchoProvider _echo;
-  late final ProviderLlmChatSessionRepository _repo;
-  late final ChatCubit _cubit;
-
   static const _welcome =
       'Hello! This is the Flutter AI Assistant, how can I help you today?';
-
-  @override
-  void initState() {
-    super.initState();
-    _echo = EchoProvider();
-    _repo = ProviderLlmChatSessionRepository(_echo);
-    _cubit = ChatCubit(
-      repository: _repo,
-      cancelMessageLabel: 'CANCEL',
-      errorMessageLabel: 'ERROR',
-    );
-  }
-
-  @override
-  void dispose() {
-    unawaited(_cubit.close());
-    _repo.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text('Title')),
-        body: BlocProvider.value(
-          value: _cubit,
-          child: BlocBuilder<ChatCubit, ChatState>(
-            builder: (context, state) => LlmChatView(
-              config: ChatUiConfig(
-                style: null,
-                suggestions: List.generate(
-                  widget.suggestionsCount,
-                  (index) => 'Suggestion sample ${index + 1}',
-                ),
-                welcomeMessage: _welcome,
-                responseBuilder: null,
-                messageSender: null,
-                enableAttachments: true,
-                enableVoiceNotes: true,
-                attachmentActionBarBuilder: null,
-                composerFooterBuilder: null,
-                attachmentViewRegistry: null,
-              ),
-              state: state,
-              onIntent: context.read<ChatCubit>().submit,
-              autofocus: widget.autofocus,
+        body: LlmChatView(
+          config: ChatUiConfig(
+            style: null,
+            suggestions: List.generate(
+              suggestionsCount,
+              (index) => 'Suggestion sample ${index + 1}',
             ),
+            welcomeMessage: _welcome,
+            responseBuilder: null,
+            enableAttachments: true,
+            enableVoiceNotes: true,
+            attachmentActionBarBuilder: null,
+            composerFooterBuilder: null,
+            attachmentViewRegistry: null,
           ),
+          state: const ChatState(visibleMessages: []),
+          onIntent: (_) async {},
+          autofocus: autofocus,
         ),
       ),
     );

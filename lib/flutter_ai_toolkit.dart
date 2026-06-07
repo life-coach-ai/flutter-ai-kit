@@ -3,12 +3,10 @@
 /// A library for integrating AI-powered chat functionality into Flutter
 /// applications.
 ///
-/// Key components: [LlmChatSessionRepository], [ChatCubit], [ChatUiConfig],
-/// legacy [LlmProvider] implementations (e.g. [EchoProvider]).
+/// Key components: [ChatSessionBloc], [ChatState], [ChatUiConfig].
 library;
 
 export 'package:cross_file/cross_file.dart' show XFile;
-export 'src/chat_session/chat_cubit.dart';
 export 'src/chat_session/chat_intent.dart';
 export 'src/chat_session/chat_message_mapper.dart';
 export 'src/chat_session/chat_tool_intent_mapper.dart';
@@ -35,13 +33,9 @@ export 'src/repositories/model/user_location.dart';
 export 'src/repositories/persistent_chat_session_repository.dart';
 export 'src/repositories/transcription_repository.dart';
 export 'src/session/active_tool_execution_summary.dart';
-export 'src/session/history_snapshot.dart';
-export 'src/session/provider_llm_chat_session_repository.dart';
-export 'src/session/llm_chat_session_repository.dart';
 export 'src/session/session_tool_types.dart';
 export 'src/styles/styles.dart';
 export 'src/views/attachment_action_bar_builder.dart';
 export 'src/views/attachment_view_registry.dart';
 export 'src/views/chat_input/composer_draft_controller.dart';
 export 'src/views/llm_chat_view/llm_chat_view.dart';
-export 'src/views/llm_chat_view/llm_response.dart';

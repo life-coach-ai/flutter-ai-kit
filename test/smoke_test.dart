@@ -6,43 +6,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-void main() {
-  testWidgets('Smoke Test - Echo via ChatCubit', (tester) async {
-    final echo = SimpleEchoProvider();
-    final repo = ProviderLlmChatSessionRepository(echo);
-    addTearDown(repo.dispose);
+import 'fakes/fake_repositories.dart';
 
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: BlocProvider(
-            create: (_) => ChatCubit(
-              repository: repo,
-              cancelMessageLabel: 'CANCEL',
-              errorMessageLabel: 'ERROR',
-            ),
-            child: BlocBuilder<ChatCubit, ChatState>(
-              builder: (context, state) => LlmChatView(
-                config: const ChatUiConfig(
-                  style: null,
-                  suggestions: [],
-                  welcomeMessage: null,
-                  responseBuilder: null,
-                  messageSender: null,
-                  enableAttachments: true,
-                  enableVoiceNotes: true,
-                  attachmentActionBarBuilder: null,
-                  composerFooterBuilder: null,
-                  attachmentViewRegistry: null,
-                ),
-                state: state,
-                onIntent: context.read<ChatCubit>().submit,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
+void main() {
+  testWidgets('Smoke Test - send via ChatSessionBloc renders in LlmChatView', (
+    tester,
+  ) async {
+    await tester.pumpWidget(const MaterialApp(home: _BlocChatHarness()));
 
     final textField = find.byWidgetPredicate((widget) => widget is TextField);
     expect(textField, findsOneWidget);
@@ -53,60 +23,74 @@ void main() {
     expect(submitButton, findsOneWidget);
     await tester.tap(submitButton);
     await tester.pump();
-    await tester.pump(const Duration(seconds: 3));
+    await tester.pumpAndSettle();
 
     expect(
       find.byWidgetPredicate(
         (widget) =>
             widget is MarkdownBody &&
-            widget.data == 'prompt: Hello, World!\nattachments: []',
+            widget.data != null &&
+            widget.data!.contains('Hello, World!'),
       ),
       findsOneWidget,
     );
   });
 }
 
-/// Same behaviour as the previous smoke [LlmProvider] stub.
-class SimpleEchoProvider extends LlmProvider with ChangeNotifier {
-  SimpleEchoProvider({Iterable<ChatMessage>? history})
-      : _history = List<ChatMessage>.from(history ?? []);
-
-  final List<ChatMessage> _history;
+class _BlocChatHarness extends StatefulWidget {
+  const _BlocChatHarness();
 
   @override
-  Stream<String> generateStream(
-    String prompt, {
-    Iterable<Attachment> attachments = const [],
-  }) async* {
-    yield 'prompt: $prompt\n';
-    yield 'attachments: ${attachments.isEmpty ? '[]' : attachments.map((a) => a.toString())}';
+  State<_BlocChatHarness> createState() => _BlocChatHarnessState();
+}
+
+class _BlocChatHarnessState extends State<_BlocChatHarness> {
+  late final ChatSessionBloc _bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc = ChatSessionBloc(
+      chatSessionId: 'chat-1',
+      chatRepository: FakePersistentChatSessionRepository(
+        autoEchoAssistantReply: true,
+      ),
+      toolExecutionRepository: FakeAssyncToolExecutionRepository(),
+      transcriptionRepository: FakeTranscriptionRepository(),
+      cancelMessageLabel: 'CANCEL',
+      errorMessageLabel: 'ERROR',
+    );
   }
 
   @override
-  Stream<String> sendMessageStream(
-    String prompt, {
-    Iterable<Attachment> attachments = const [],
-    String? editedUserMessageId,
-  }) async* {
-    final userMessage = ChatMessage.user(prompt, attachments);
-    final llmMessage = ChatMessage.llm();
-    _history.addAll([userMessage, llmMessage]);
-    final chunks = generateStream(prompt, attachments: attachments);
-    await for (final chunk in chunks) {
-      llmMessage.append(chunk);
-      yield chunk;
-    }
-    notifyListeners();
+  void dispose() {
+    _bloc.close();
+    super.dispose();
   }
 
   @override
-  Iterable<ChatMessage> get history => _history;
-
-  @override
-  set history(Iterable<ChatMessage> history) {
-    _history
-      ..clear()
-      ..addAll(history);
-    notifyListeners();
+  Widget build(BuildContext context) {
+    return BlocProvider.value(
+      value: _bloc,
+      child: Scaffold(
+        body: BlocBuilder<ChatSessionBloc, ChatState>(
+          builder: (context, state) => LlmChatView(
+            config: const ChatUiConfig(
+              style: null,
+              suggestions: [],
+              welcomeMessage: null,
+              responseBuilder: null,
+              enableAttachments: true,
+              enableVoiceNotes: true,
+              attachmentActionBarBuilder: null,
+              composerFooterBuilder: null,
+              attachmentViewRegistry: null,
+            ),
+            state: state,
+            onIntent: _bloc.submit,
+          ),
+        ),
+      ),
+    );
   }
 }

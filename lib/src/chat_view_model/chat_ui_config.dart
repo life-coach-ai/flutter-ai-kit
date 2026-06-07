@@ -2,7 +2,6 @@
 
 import 'package:flutter/foundation.dart';
 
-import '../providers/interface/llm_provider.dart';
 import '../styles/llm_chat_view_style.dart';
 import '../views/attachment_action_bar_builder.dart'
     show AttachmentActionBarBuilder, ComposerFooterBuilder;
@@ -17,7 +16,6 @@ class ChatUiConfig {
     required this.suggestions,
     required this.welcomeMessage,
     required this.responseBuilder,
-    required this.messageSender,
     required this.enableAttachments,
     required this.enableVoiceNotes,
     required this.attachmentActionBarBuilder,
@@ -32,8 +30,6 @@ class ChatUiConfig {
   final String? welcomeMessage;
 
   final ResponseBuilder? responseBuilder;
-
-  final LlmStreamGenerator? messageSender;
 
   final bool enableAttachments;
 
@@ -53,7 +49,6 @@ class ChatUiConfig {
           other.suggestions == suggestions &&
           other.welcomeMessage == welcomeMessage &&
           other.responseBuilder == responseBuilder &&
-          other.messageSender == messageSender &&
           other.enableAttachments == enableAttachments &&
           other.enableVoiceNotes == enableVoiceNotes &&
           other.attachmentActionBarBuilder == attachmentActionBarBuilder &&
@@ -66,7 +61,6 @@ class ChatUiConfig {
         suggestions,
         welcomeMessage,
         responseBuilder,
-        messageSender,
         enableAttachments,
         enableVoiceNotes,
         attachmentActionBarBuilder,

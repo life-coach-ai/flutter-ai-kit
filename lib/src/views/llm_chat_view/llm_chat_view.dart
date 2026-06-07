@@ -16,7 +16,7 @@ import '../chat_input/chat_input.dart';
 import '../chat_input/composer_draft_controller.dart';
 import '../../providers/interface/attachments.dart' show Attachment;
 
-/// Full chat shell: [ChatUiConfig] for styles/builders; [ChatState] from parent [ChatCubit].
+/// Full chat shell: [ChatUiConfig] for styles/builders; [ChatState] from parent bloc.
 ///
 /// Cubit-agnostic — parent maps [BlocBuilder] → [state] and wires [onIntent].
 @immutable
