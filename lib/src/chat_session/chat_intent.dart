@@ -31,4 +31,6 @@ class ChatIntent with _$ChatIntent {
   }) = _TranslateSpeechToText;
 
   const factory ChatIntent.cancelSpeechToText() = _CancelSpeechToText;
+
+  const factory ChatIntent.retryLastFailedTurn() = _RetryLastFailedTurn;
 }

@@ -4,12 +4,31 @@ import '../repositories/model/persisted_chat_message.dart';
 import '../repositories/model/persisted_chat_tool_intent.dart';
 
 /// Maps persisted Firestore history rows to legacy UI [ChatMessage] rows.
-List<ChatMessage> persistedMessagesToUi(Iterable<ChatMessageBase> messages) =>
-    [for (final message in messages) persistedMessageToUi(message)];
+List<ChatMessage> persistedMessagesToUi(
+  Iterable<ChatMessageBase> messages, {
+  required String assistantErrorLabel,
+}) =>
+    [
+      for (final message in messages)
+        persistedMessageToUi(
+          message,
+          assistantErrorLabel: assistantErrorLabel,
+        ),
+    ];
 
-ChatMessage persistedMessageToUi(ChatMessageBase message) => switch (message) {
-      UserChatMessage(:final text, :final serverUuid, :final clientUuid,
-          :final serverTimestamp, :final clientTimestamp, :final chatToolIntents) =>
+ChatMessage persistedMessageToUi(
+  ChatMessageBase message, {
+  required String assistantErrorLabel,
+}) =>
+    switch (message) {
+      UserChatMessage(
+        :final text,
+        :final serverUuid,
+        :final clientUuid,
+        :final serverTimestamp,
+        :final clientTimestamp,
+        :final chatToolIntents,
+      ) =>
         ChatMessage.user(
           text,
           _toolIntentsToAttachments(chatToolIntents),
@@ -24,6 +43,7 @@ ChatMessage persistedMessageToUi(ChatMessageBase message) => switch (message) {
         :final clientUuid,
         :final serverTimestamp,
         :final clientTimestamp,
+        :final generationStatus,
         :final metadata,
       ) =>
         _assistantToUi(
@@ -32,26 +52,39 @@ ChatMessage persistedMessageToUi(ChatMessageBase message) => switch (message) {
           clientUuid: clientUuid,
           serverTimestamp: serverTimestamp,
           clientTimestamp: clientTimestamp,
+          generationStatus: generationStatus,
           metadata: metadata,
+          assistantErrorLabel: assistantErrorLabel,
         ),
     };
 
 ChatMessage _assistantToUi({
   required String text,
   required String serverUuid,
+  required AssistantGenerationStatus generationStatus,
+  required String assistantErrorLabel,
   String? clientUuid,
   DateTime? serverTimestamp,
   DateTime? clientTimestamp,
   Map<String, dynamic>? metadata,
 }) {
+  final mergedMetadata = <String, dynamic>{
+    ...?metadata,
+    if (generationStatus == AssistantGenerationStatus.failed)
+      'generation_status': generationStatus.jsonValue,
+  };
+
   final message = ChatMessage.llm(
     serverUuid: serverUuid,
     clientUuid: clientUuid,
     serverTimestamp: serverTimestamp,
     clientTimestamp: clientTimestamp,
-    metadata: metadata,
+    metadata: mergedMetadata.isEmpty ? null : mergedMetadata,
   );
-  if (text.isNotEmpty) {
+
+  if (generationStatus == AssistantGenerationStatus.failed && text.isEmpty) {
+    message.text = assistantErrorLabel;
+  } else if (text.isNotEmpty) {
     message.text = text;
   }
   return message;
@@ -91,4 +124,39 @@ AssistantGenerationStatus? lastAssistantGenerationStatus(
     }
   }
   return null;
+}
+
+/// User row in [history] with the given [serverUuid], if any.
+UserChatMessage? findUserMessageByServerUuid(
+  Iterable<ChatMessageBase> history,
+  String serverUuid,
+) {
+  for (final message in history) {
+    if (message is UserChatMessage && message.serverUuid == serverUuid) {
+      return message;
+    }
+  }
+  return null;
+}
+
+/// Server UUID of the user message that can be retried when the last turn failed.
+///
+/// Uses [AssistantChatMessage.parentMessageUuid] and verifies the parent user
+/// row is still present in [history].
+String? retryableUserMessageServerUuid(List<ChatMessageBase> history) {
+  if (history.isEmpty) {
+    return null;
+  }
+  final last = history.last;
+  if (last is! AssistantChatMessage ||
+      last.generationStatus != AssistantGenerationStatus.failed) {
+    return null;
+  }
+  final parentUuid = last.parentMessageUuid?.trim();
+  if (parentUuid == null || parentUuid.isEmpty) {
+    return null;
+  }
+  return findUserMessageByServerUuid(history, parentUuid) == null
+      ? null
+      : parentUuid;
 }

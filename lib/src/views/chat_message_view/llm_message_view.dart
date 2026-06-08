@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -24,6 +25,7 @@ class LlmMessageView extends StatelessWidget {
   const LlmMessageView(
     this.message, {
     this.isWelcomeMessage = false,
+    this.onRetry,
     super.key,
   });
 
@@ -33,16 +35,19 @@ class LlmMessageView extends StatelessWidget {
   /// Whether the message is the welcome message.
   final bool isWelcomeMessage;
 
+  /// Invoked when the user retries a failed assistant generation.
+  final VoidCallback? onRetry;
+
   @override
   Widget build(BuildContext context) => Row(
     children: [
-      // const Spacer(flex: 1,),
       ChatUiConfigClient(
         builder: (context, config, child) {
           final text = message.text;
           final chatStyle = LlmChatViewStyle.resolve(config.style);
           final llmStyle = LlmMessageStyle.resolve(chatStyle.llmMessageStyle);
           final showLeadingIcon = llmStyle.showLeadingIcon;
+          final retryLabel = config.retryMessageLabel ?? 'Retry';
 
           return Flexible(
             flex: llmStyle.flex,
@@ -77,36 +82,52 @@ class LlmMessageView extends StatelessWidget {
                       decoration: llmStyle.decoration,
                       margin: EdgeInsets.only(left: showLeadingIcon ? 28 : 0),
                       padding: llmStyle.padding,
-                      child:
-                          text == null
-                              ? SizedBox(
-                                width: 32,
-                                child: JumpingDotsProgressIndicator(
-                                  fontSize: 24,
-                                  color: chatStyle.progressIndicatorColor!,
-                                ),
-                              )
-                              : AdaptiveCopyText(
-                                clipboardText: text,
-                                chatStyle: chatStyle,
-                                child:
-                                    isWelcomeMessage ||
-                                            config.responseBuilder == null
-                                        ? MarkdownBody(
-                                          data: text,
-                                          selectable: false,
-                                          styleSheet: llmStyle.markdownStyle,
-                                          onTapLink: (_, href, _) {
-                                            if (href != null) {
-                                              launchUrl(Uri.parse(href));
-                                            }
-                                          },
-                                        )
-                                        : config.responseBuilder!(
-                                          context,
-                                          text,
-                                        ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (text == null)
+                            SizedBox(
+                              width: 32,
+                              child: JumpingDotsProgressIndicator(
+                                fontSize: 24,
+                                color: chatStyle.progressIndicatorColor!,
                               ),
+                            )
+                          else
+                            AdaptiveCopyText(
+                              clipboardText: text,
+                              chatStyle: chatStyle,
+                              child:
+                                  isWelcomeMessage ||
+                                          config.responseBuilder == null
+                                      ? MarkdownBody(
+                                        data: text,
+                                        selectable: false,
+                                        styleSheet: llmStyle.markdownStyle,
+                                        onTapLink: (_, href, _) {
+                                          if (href != null) {
+                                            launchUrl(Uri.parse(href));
+                                          }
+                                        },
+                                      )
+                                      : config.responseBuilder!(
+                                        context,
+                                        text,
+                                      ),
+                            ),
+                          if (onRetry != null)
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 8),
+                                child: TextButton(
+                                  onPressed: onRetry,
+                                  child: Text(retryLabel),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

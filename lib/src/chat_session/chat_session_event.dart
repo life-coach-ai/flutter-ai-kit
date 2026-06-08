@@ -62,4 +62,7 @@ sealed class ChatSessionEvent with _$ChatSessionEvent {
       ChatSessionCancelSpeechToTextRequested;
 
   const factory ChatSessionEvent.uiEffectCleared() = ChatSessionUiEffectCleared;
+
+  const factory ChatSessionEvent.retryLastFailedTurnRequested() =
+      ChatSessionRetryLastFailedTurnRequested;
 }

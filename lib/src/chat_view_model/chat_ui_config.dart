@@ -21,6 +21,7 @@ class ChatUiConfig {
     required this.attachmentActionBarBuilder,
     this.composerFooterBuilder,
     required this.attachmentViewRegistry,
+    this.retryMessageLabel,
   });
 
   final LlmChatViewStyle? style;
@@ -41,6 +42,9 @@ class ChatUiConfig {
 
   final AttachmentViewRegistry? attachmentViewRegistry;
 
+  /// Label for the retry button on a failed assistant turn.
+  final String? retryMessageLabel;
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -53,7 +57,8 @@ class ChatUiConfig {
           other.enableVoiceNotes == enableVoiceNotes &&
           other.attachmentActionBarBuilder == attachmentActionBarBuilder &&
           other.composerFooterBuilder == composerFooterBuilder &&
-          other.attachmentViewRegistry == attachmentViewRegistry);
+          other.attachmentViewRegistry == attachmentViewRegistry &&
+          other.retryMessageLabel == retryMessageLabel);
 
   @override
   int get hashCode => Object.hash(
@@ -66,5 +71,6 @@ class ChatUiConfig {
         attachmentActionBarBuilder,
         composerFooterBuilder,
         attachmentViewRegistry,
+        retryMessageLabel,
       );
 }

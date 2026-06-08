@@ -21,6 +21,8 @@ class ChatHistoryView extends StatefulWidget {
     this.onEditMessage,
     required this.onSelectSuggestion,
     required this.canEditLastUserMessage,
+    this.canRetryLastFailedTurn = false,
+    this.onRetryLastFailedTurn,
     super.key,
   });
 
@@ -38,6 +40,11 @@ class ChatHistoryView extends StatefulWidget {
   final void Function(String suggestion) onSelectSuggestion;
 
   final bool canEditLastUserMessage;
+
+  /// When true and the last message is a failed assistant turn, show Retry.
+  final bool canRetryLastFailedTurn;
+
+  final VoidCallback? onRetryLastFailedTurn;
 
   @override
   State<ChatHistoryView> createState() => _ChatHistoryViewState();
@@ -89,6 +96,13 @@ class _ChatHistoryViewState extends State<ChatHistoryView> {
               isLastUserMessage &&
               widget.onEditMessage != null;
           final isUser = message.origin.isUser;
+          final isLastMessage = messageIndex == history.length - 1;
+          final canRetry =
+              widget.canRetryLastFailedTurn &&
+              isLastMessage &&
+              !isUser &&
+              widget.onRetryLastFailedTurn != null &&
+              message.metadata?['generation_status'] == 'failed';
 
           return Padding(
             padding: EdgeInsets.only(top: messageSpacing),
@@ -104,6 +118,7 @@ class _ChatHistoryViewState extends State<ChatHistoryView> {
                     : LlmMessageView(
                       message,
                       isWelcomeMessage: messageIndex == 0,
+                      onRetry: canRetry ? widget.onRetryLastFailedTurn : null,
                     ),
           );
         },

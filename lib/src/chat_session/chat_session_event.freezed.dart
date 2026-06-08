@@ -39,6 +39,7 @@ mixin _$ChatSessionEvent {
     required TResult Function(XFile file) translateSpeechToTextRequested,
     required TResult Function() cancelSpeechToTextRequested,
     required TResult Function() uiEffectCleared,
+    required TResult Function() retryLastFailedTurnRequested,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
@@ -62,6 +63,7 @@ mixin _$ChatSessionEvent {
     TResult? Function(XFile file)? translateSpeechToTextRequested,
     TResult? Function()? cancelSpeechToTextRequested,
     TResult? Function()? uiEffectCleared,
+    TResult? Function()? retryLastFailedTurnRequested,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
@@ -85,6 +87,7 @@ mixin _$ChatSessionEvent {
     TResult Function(XFile file)? translateSpeechToTextRequested,
     TResult Function()? cancelSpeechToTextRequested,
     TResult Function()? uiEffectCleared,
+    TResult Function()? retryLastFailedTurnRequested,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -112,6 +115,8 @@ mixin _$ChatSessionEvent {
     required TResult Function(ChatSessionCancelSpeechToTextRequested value)
     cancelSpeechToTextRequested,
     required TResult Function(ChatSessionUiEffectCleared value) uiEffectCleared,
+    required TResult Function(ChatSessionRetryLastFailedTurnRequested value)
+    retryLastFailedTurnRequested,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
@@ -136,6 +141,8 @@ mixin _$ChatSessionEvent {
     TResult? Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult? Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult? Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
@@ -160,6 +167,8 @@ mixin _$ChatSessionEvent {
     TResult Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
@@ -288,6 +297,7 @@ class _$ChatSessionHistoryReceivedImpl implements ChatSessionHistoryReceived {
     required TResult Function(XFile file) translateSpeechToTextRequested,
     required TResult Function() cancelSpeechToTextRequested,
     required TResult Function() uiEffectCleared,
+    required TResult Function() retryLastFailedTurnRequested,
   }) {
     return historyReceived(messages);
   }
@@ -315,6 +325,7 @@ class _$ChatSessionHistoryReceivedImpl implements ChatSessionHistoryReceived {
     TResult? Function(XFile file)? translateSpeechToTextRequested,
     TResult? Function()? cancelSpeechToTextRequested,
     TResult? Function()? uiEffectCleared,
+    TResult? Function()? retryLastFailedTurnRequested,
   }) {
     return historyReceived?.call(messages);
   }
@@ -342,6 +353,7 @@ class _$ChatSessionHistoryReceivedImpl implements ChatSessionHistoryReceived {
     TResult Function(XFile file)? translateSpeechToTextRequested,
     TResult Function()? cancelSpeechToTextRequested,
     TResult Function()? uiEffectCleared,
+    TResult Function()? retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (historyReceived != null) {
@@ -376,6 +388,8 @@ class _$ChatSessionHistoryReceivedImpl implements ChatSessionHistoryReceived {
     required TResult Function(ChatSessionCancelSpeechToTextRequested value)
     cancelSpeechToTextRequested,
     required TResult Function(ChatSessionUiEffectCleared value) uiEffectCleared,
+    required TResult Function(ChatSessionRetryLastFailedTurnRequested value)
+    retryLastFailedTurnRequested,
   }) {
     return historyReceived(this);
   }
@@ -404,6 +418,8 @@ class _$ChatSessionHistoryReceivedImpl implements ChatSessionHistoryReceived {
     TResult? Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult? Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult? Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
   }) {
     return historyReceived?.call(this);
   }
@@ -432,6 +448,8 @@ class _$ChatSessionHistoryReceivedImpl implements ChatSessionHistoryReceived {
     TResult Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (historyReceived != null) {
@@ -549,6 +567,7 @@ class _$ChatSessionDocumentReceivedImpl implements ChatSessionDocumentReceived {
     required TResult Function(XFile file) translateSpeechToTextRequested,
     required TResult Function() cancelSpeechToTextRequested,
     required TResult Function() uiEffectCleared,
+    required TResult Function() retryLastFailedTurnRequested,
   }) {
     return sessionDocumentReceived(session);
   }
@@ -576,6 +595,7 @@ class _$ChatSessionDocumentReceivedImpl implements ChatSessionDocumentReceived {
     TResult? Function(XFile file)? translateSpeechToTextRequested,
     TResult? Function()? cancelSpeechToTextRequested,
     TResult? Function()? uiEffectCleared,
+    TResult? Function()? retryLastFailedTurnRequested,
   }) {
     return sessionDocumentReceived?.call(session);
   }
@@ -603,6 +623,7 @@ class _$ChatSessionDocumentReceivedImpl implements ChatSessionDocumentReceived {
     TResult Function(XFile file)? translateSpeechToTextRequested,
     TResult Function()? cancelSpeechToTextRequested,
     TResult Function()? uiEffectCleared,
+    TResult Function()? retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (sessionDocumentReceived != null) {
@@ -637,6 +658,8 @@ class _$ChatSessionDocumentReceivedImpl implements ChatSessionDocumentReceived {
     required TResult Function(ChatSessionCancelSpeechToTextRequested value)
     cancelSpeechToTextRequested,
     required TResult Function(ChatSessionUiEffectCleared value) uiEffectCleared,
+    required TResult Function(ChatSessionRetryLastFailedTurnRequested value)
+    retryLastFailedTurnRequested,
   }) {
     return sessionDocumentReceived(this);
   }
@@ -665,6 +688,8 @@ class _$ChatSessionDocumentReceivedImpl implements ChatSessionDocumentReceived {
     TResult? Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult? Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult? Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
   }) {
     return sessionDocumentReceived?.call(this);
   }
@@ -693,6 +718,8 @@ class _$ChatSessionDocumentReceivedImpl implements ChatSessionDocumentReceived {
     TResult Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (sessionDocumentReceived != null) {
@@ -828,6 +855,7 @@ class _$ChatSessionToolExecutionsReceivedImpl
     required TResult Function(XFile file) translateSpeechToTextRequested,
     required TResult Function() cancelSpeechToTextRequested,
     required TResult Function() uiEffectCleared,
+    required TResult Function() retryLastFailedTurnRequested,
   }) {
     return toolExecutionsReceived(executions);
   }
@@ -855,6 +883,7 @@ class _$ChatSessionToolExecutionsReceivedImpl
     TResult? Function(XFile file)? translateSpeechToTextRequested,
     TResult? Function()? cancelSpeechToTextRequested,
     TResult? Function()? uiEffectCleared,
+    TResult? Function()? retryLastFailedTurnRequested,
   }) {
     return toolExecutionsReceived?.call(executions);
   }
@@ -882,6 +911,7 @@ class _$ChatSessionToolExecutionsReceivedImpl
     TResult Function(XFile file)? translateSpeechToTextRequested,
     TResult Function()? cancelSpeechToTextRequested,
     TResult Function()? uiEffectCleared,
+    TResult Function()? retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (toolExecutionsReceived != null) {
@@ -916,6 +946,8 @@ class _$ChatSessionToolExecutionsReceivedImpl
     required TResult Function(ChatSessionCancelSpeechToTextRequested value)
     cancelSpeechToTextRequested,
     required TResult Function(ChatSessionUiEffectCleared value) uiEffectCleared,
+    required TResult Function(ChatSessionRetryLastFailedTurnRequested value)
+    retryLastFailedTurnRequested,
   }) {
     return toolExecutionsReceived(this);
   }
@@ -944,6 +976,8 @@ class _$ChatSessionToolExecutionsReceivedImpl
     TResult? Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult? Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult? Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
   }) {
     return toolExecutionsReceived?.call(this);
   }
@@ -972,6 +1006,8 @@ class _$ChatSessionToolExecutionsReceivedImpl
     TResult Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (toolExecutionsReceived != null) {
@@ -1166,6 +1202,7 @@ class _$ChatSessionSendMessageRequestedImpl
     required TResult Function(XFile file) translateSpeechToTextRequested,
     required TResult Function() cancelSpeechToTextRequested,
     required TResult Function() uiEffectCleared,
+    required TResult Function() retryLastFailedTurnRequested,
   }) {
     return sendMessageRequested(
       text,
@@ -1198,6 +1235,7 @@ class _$ChatSessionSendMessageRequestedImpl
     TResult? Function(XFile file)? translateSpeechToTextRequested,
     TResult? Function()? cancelSpeechToTextRequested,
     TResult? Function()? uiEffectCleared,
+    TResult? Function()? retryLastFailedTurnRequested,
   }) {
     return sendMessageRequested?.call(
       text,
@@ -1230,6 +1268,7 @@ class _$ChatSessionSendMessageRequestedImpl
     TResult Function(XFile file)? translateSpeechToTextRequested,
     TResult Function()? cancelSpeechToTextRequested,
     TResult Function()? uiEffectCleared,
+    TResult Function()? retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (sendMessageRequested != null) {
@@ -1269,6 +1308,8 @@ class _$ChatSessionSendMessageRequestedImpl
     required TResult Function(ChatSessionCancelSpeechToTextRequested value)
     cancelSpeechToTextRequested,
     required TResult Function(ChatSessionUiEffectCleared value) uiEffectCleared,
+    required TResult Function(ChatSessionRetryLastFailedTurnRequested value)
+    retryLastFailedTurnRequested,
   }) {
     return sendMessageRequested(this);
   }
@@ -1297,6 +1338,8 @@ class _$ChatSessionSendMessageRequestedImpl
     TResult? Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult? Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult? Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
   }) {
     return sendMessageRequested?.call(this);
   }
@@ -1325,6 +1368,8 @@ class _$ChatSessionSendMessageRequestedImpl
     TResult Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (sendMessageRequested != null) {
@@ -1456,6 +1501,7 @@ class _$ChatSessionSendMessageAcknowledgedImpl
     required TResult Function(XFile file) translateSpeechToTextRequested,
     required TResult Function() cancelSpeechToTextRequested,
     required TResult Function() uiEffectCleared,
+    required TResult Function() retryLastFailedTurnRequested,
   }) {
     return sendMessageAcknowledged(ack);
   }
@@ -1483,6 +1529,7 @@ class _$ChatSessionSendMessageAcknowledgedImpl
     TResult? Function(XFile file)? translateSpeechToTextRequested,
     TResult? Function()? cancelSpeechToTextRequested,
     TResult? Function()? uiEffectCleared,
+    TResult? Function()? retryLastFailedTurnRequested,
   }) {
     return sendMessageAcknowledged?.call(ack);
   }
@@ -1510,6 +1557,7 @@ class _$ChatSessionSendMessageAcknowledgedImpl
     TResult Function(XFile file)? translateSpeechToTextRequested,
     TResult Function()? cancelSpeechToTextRequested,
     TResult Function()? uiEffectCleared,
+    TResult Function()? retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (sendMessageAcknowledged != null) {
@@ -1544,6 +1592,8 @@ class _$ChatSessionSendMessageAcknowledgedImpl
     required TResult Function(ChatSessionCancelSpeechToTextRequested value)
     cancelSpeechToTextRequested,
     required TResult Function(ChatSessionUiEffectCleared value) uiEffectCleared,
+    required TResult Function(ChatSessionRetryLastFailedTurnRequested value)
+    retryLastFailedTurnRequested,
   }) {
     return sendMessageAcknowledged(this);
   }
@@ -1572,6 +1622,8 @@ class _$ChatSessionSendMessageAcknowledgedImpl
     TResult? Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult? Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult? Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
   }) {
     return sendMessageAcknowledged?.call(this);
   }
@@ -1600,6 +1652,8 @@ class _$ChatSessionSendMessageAcknowledgedImpl
     TResult Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (sendMessageAcknowledged != null) {
@@ -1719,6 +1773,7 @@ class _$ChatSessionSendMessageFailedImpl
     required TResult Function(XFile file) translateSpeechToTextRequested,
     required TResult Function() cancelSpeechToTextRequested,
     required TResult Function() uiEffectCleared,
+    required TResult Function() retryLastFailedTurnRequested,
   }) {
     return sendMessageFailed(error);
   }
@@ -1746,6 +1801,7 @@ class _$ChatSessionSendMessageFailedImpl
     TResult? Function(XFile file)? translateSpeechToTextRequested,
     TResult? Function()? cancelSpeechToTextRequested,
     TResult? Function()? uiEffectCleared,
+    TResult? Function()? retryLastFailedTurnRequested,
   }) {
     return sendMessageFailed?.call(error);
   }
@@ -1773,6 +1829,7 @@ class _$ChatSessionSendMessageFailedImpl
     TResult Function(XFile file)? translateSpeechToTextRequested,
     TResult Function()? cancelSpeechToTextRequested,
     TResult Function()? uiEffectCleared,
+    TResult Function()? retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (sendMessageFailed != null) {
@@ -1807,6 +1864,8 @@ class _$ChatSessionSendMessageFailedImpl
     required TResult Function(ChatSessionCancelSpeechToTextRequested value)
     cancelSpeechToTextRequested,
     required TResult Function(ChatSessionUiEffectCleared value) uiEffectCleared,
+    required TResult Function(ChatSessionRetryLastFailedTurnRequested value)
+    retryLastFailedTurnRequested,
   }) {
     return sendMessageFailed(this);
   }
@@ -1835,6 +1894,8 @@ class _$ChatSessionSendMessageFailedImpl
     TResult? Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult? Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult? Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
   }) {
     return sendMessageFailed?.call(this);
   }
@@ -1863,6 +1924,8 @@ class _$ChatSessionSendMessageFailedImpl
     TResult Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (sendMessageFailed != null) {
@@ -1956,6 +2019,7 @@ class _$ChatSessionCancelStreamRequestedImpl
     required TResult Function(XFile file) translateSpeechToTextRequested,
     required TResult Function() cancelSpeechToTextRequested,
     required TResult Function() uiEffectCleared,
+    required TResult Function() retryLastFailedTurnRequested,
   }) {
     return cancelStreamRequested();
   }
@@ -1983,6 +2047,7 @@ class _$ChatSessionCancelStreamRequestedImpl
     TResult? Function(XFile file)? translateSpeechToTextRequested,
     TResult? Function()? cancelSpeechToTextRequested,
     TResult? Function()? uiEffectCleared,
+    TResult? Function()? retryLastFailedTurnRequested,
   }) {
     return cancelStreamRequested?.call();
   }
@@ -2010,6 +2075,7 @@ class _$ChatSessionCancelStreamRequestedImpl
     TResult Function(XFile file)? translateSpeechToTextRequested,
     TResult Function()? cancelSpeechToTextRequested,
     TResult Function()? uiEffectCleared,
+    TResult Function()? retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (cancelStreamRequested != null) {
@@ -2044,6 +2110,8 @@ class _$ChatSessionCancelStreamRequestedImpl
     required TResult Function(ChatSessionCancelSpeechToTextRequested value)
     cancelSpeechToTextRequested,
     required TResult Function(ChatSessionUiEffectCleared value) uiEffectCleared,
+    required TResult Function(ChatSessionRetryLastFailedTurnRequested value)
+    retryLastFailedTurnRequested,
   }) {
     return cancelStreamRequested(this);
   }
@@ -2072,6 +2140,8 @@ class _$ChatSessionCancelStreamRequestedImpl
     TResult? Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult? Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult? Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
   }) {
     return cancelStreamRequested?.call(this);
   }
@@ -2100,6 +2170,8 @@ class _$ChatSessionCancelStreamRequestedImpl
     TResult Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (cancelStreamRequested != null) {
@@ -2183,6 +2255,7 @@ class _$ChatSessionEditLastTurnRequestedImpl
     required TResult Function(XFile file) translateSpeechToTextRequested,
     required TResult Function() cancelSpeechToTextRequested,
     required TResult Function() uiEffectCleared,
+    required TResult Function() retryLastFailedTurnRequested,
   }) {
     return editLastTurnRequested();
   }
@@ -2210,6 +2283,7 @@ class _$ChatSessionEditLastTurnRequestedImpl
     TResult? Function(XFile file)? translateSpeechToTextRequested,
     TResult? Function()? cancelSpeechToTextRequested,
     TResult? Function()? uiEffectCleared,
+    TResult? Function()? retryLastFailedTurnRequested,
   }) {
     return editLastTurnRequested?.call();
   }
@@ -2237,6 +2311,7 @@ class _$ChatSessionEditLastTurnRequestedImpl
     TResult Function(XFile file)? translateSpeechToTextRequested,
     TResult Function()? cancelSpeechToTextRequested,
     TResult Function()? uiEffectCleared,
+    TResult Function()? retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (editLastTurnRequested != null) {
@@ -2271,6 +2346,8 @@ class _$ChatSessionEditLastTurnRequestedImpl
     required TResult Function(ChatSessionCancelSpeechToTextRequested value)
     cancelSpeechToTextRequested,
     required TResult Function(ChatSessionUiEffectCleared value) uiEffectCleared,
+    required TResult Function(ChatSessionRetryLastFailedTurnRequested value)
+    retryLastFailedTurnRequested,
   }) {
     return editLastTurnRequested(this);
   }
@@ -2299,6 +2376,8 @@ class _$ChatSessionEditLastTurnRequestedImpl
     TResult? Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult? Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult? Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
   }) {
     return editLastTurnRequested?.call(this);
   }
@@ -2327,6 +2406,8 @@ class _$ChatSessionEditLastTurnRequestedImpl
     TResult Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (editLastTurnRequested != null) {
@@ -2405,6 +2486,7 @@ class _$ChatSessionEditCancelledImpl implements ChatSessionEditCancelled {
     required TResult Function(XFile file) translateSpeechToTextRequested,
     required TResult Function() cancelSpeechToTextRequested,
     required TResult Function() uiEffectCleared,
+    required TResult Function() retryLastFailedTurnRequested,
   }) {
     return editCancelled();
   }
@@ -2432,6 +2514,7 @@ class _$ChatSessionEditCancelledImpl implements ChatSessionEditCancelled {
     TResult? Function(XFile file)? translateSpeechToTextRequested,
     TResult? Function()? cancelSpeechToTextRequested,
     TResult? Function()? uiEffectCleared,
+    TResult? Function()? retryLastFailedTurnRequested,
   }) {
     return editCancelled?.call();
   }
@@ -2459,6 +2542,7 @@ class _$ChatSessionEditCancelledImpl implements ChatSessionEditCancelled {
     TResult Function(XFile file)? translateSpeechToTextRequested,
     TResult Function()? cancelSpeechToTextRequested,
     TResult Function()? uiEffectCleared,
+    TResult Function()? retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (editCancelled != null) {
@@ -2493,6 +2577,8 @@ class _$ChatSessionEditCancelledImpl implements ChatSessionEditCancelled {
     required TResult Function(ChatSessionCancelSpeechToTextRequested value)
     cancelSpeechToTextRequested,
     required TResult Function(ChatSessionUiEffectCleared value) uiEffectCleared,
+    required TResult Function(ChatSessionRetryLastFailedTurnRequested value)
+    retryLastFailedTurnRequested,
   }) {
     return editCancelled(this);
   }
@@ -2521,6 +2607,8 @@ class _$ChatSessionEditCancelledImpl implements ChatSessionEditCancelled {
     TResult? Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult? Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult? Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
   }) {
     return editCancelled?.call(this);
   }
@@ -2549,6 +2637,8 @@ class _$ChatSessionEditCancelledImpl implements ChatSessionEditCancelled {
     TResult Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (editCancelled != null) {
@@ -2657,6 +2747,7 @@ class _$ChatSessionSelectSuggestionImpl implements ChatSessionSelectSuggestion {
     required TResult Function(XFile file) translateSpeechToTextRequested,
     required TResult Function() cancelSpeechToTextRequested,
     required TResult Function() uiEffectCleared,
+    required TResult Function() retryLastFailedTurnRequested,
   }) {
     return selectSuggestion(suggestion);
   }
@@ -2684,6 +2775,7 @@ class _$ChatSessionSelectSuggestionImpl implements ChatSessionSelectSuggestion {
     TResult? Function(XFile file)? translateSpeechToTextRequested,
     TResult? Function()? cancelSpeechToTextRequested,
     TResult? Function()? uiEffectCleared,
+    TResult? Function()? retryLastFailedTurnRequested,
   }) {
     return selectSuggestion?.call(suggestion);
   }
@@ -2711,6 +2803,7 @@ class _$ChatSessionSelectSuggestionImpl implements ChatSessionSelectSuggestion {
     TResult Function(XFile file)? translateSpeechToTextRequested,
     TResult Function()? cancelSpeechToTextRequested,
     TResult Function()? uiEffectCleared,
+    TResult Function()? retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (selectSuggestion != null) {
@@ -2745,6 +2838,8 @@ class _$ChatSessionSelectSuggestionImpl implements ChatSessionSelectSuggestion {
     required TResult Function(ChatSessionCancelSpeechToTextRequested value)
     cancelSpeechToTextRequested,
     required TResult Function(ChatSessionUiEffectCleared value) uiEffectCleared,
+    required TResult Function(ChatSessionRetryLastFailedTurnRequested value)
+    retryLastFailedTurnRequested,
   }) {
     return selectSuggestion(this);
   }
@@ -2773,6 +2868,8 @@ class _$ChatSessionSelectSuggestionImpl implements ChatSessionSelectSuggestion {
     TResult? Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult? Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult? Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
   }) {
     return selectSuggestion?.call(this);
   }
@@ -2801,6 +2898,8 @@ class _$ChatSessionSelectSuggestionImpl implements ChatSessionSelectSuggestion {
     TResult Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (selectSuggestion != null) {
@@ -2924,6 +3023,7 @@ class _$ChatSessionTranslateSpeechToTextRequestedImpl
     required TResult Function(XFile file) translateSpeechToTextRequested,
     required TResult Function() cancelSpeechToTextRequested,
     required TResult Function() uiEffectCleared,
+    required TResult Function() retryLastFailedTurnRequested,
   }) {
     return translateSpeechToTextRequested(file);
   }
@@ -2951,6 +3051,7 @@ class _$ChatSessionTranslateSpeechToTextRequestedImpl
     TResult? Function(XFile file)? translateSpeechToTextRequested,
     TResult? Function()? cancelSpeechToTextRequested,
     TResult? Function()? uiEffectCleared,
+    TResult? Function()? retryLastFailedTurnRequested,
   }) {
     return translateSpeechToTextRequested?.call(file);
   }
@@ -2978,6 +3079,7 @@ class _$ChatSessionTranslateSpeechToTextRequestedImpl
     TResult Function(XFile file)? translateSpeechToTextRequested,
     TResult Function()? cancelSpeechToTextRequested,
     TResult Function()? uiEffectCleared,
+    TResult Function()? retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (translateSpeechToTextRequested != null) {
@@ -3012,6 +3114,8 @@ class _$ChatSessionTranslateSpeechToTextRequestedImpl
     required TResult Function(ChatSessionCancelSpeechToTextRequested value)
     cancelSpeechToTextRequested,
     required TResult Function(ChatSessionUiEffectCleared value) uiEffectCleared,
+    required TResult Function(ChatSessionRetryLastFailedTurnRequested value)
+    retryLastFailedTurnRequested,
   }) {
     return translateSpeechToTextRequested(this);
   }
@@ -3040,6 +3144,8 @@ class _$ChatSessionTranslateSpeechToTextRequestedImpl
     TResult? Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult? Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult? Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
   }) {
     return translateSpeechToTextRequested?.call(this);
   }
@@ -3068,6 +3174,8 @@ class _$ChatSessionTranslateSpeechToTextRequestedImpl
     TResult Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (translateSpeechToTextRequested != null) {
@@ -3163,6 +3271,7 @@ class _$ChatSessionCancelSpeechToTextRequestedImpl
     required TResult Function(XFile file) translateSpeechToTextRequested,
     required TResult Function() cancelSpeechToTextRequested,
     required TResult Function() uiEffectCleared,
+    required TResult Function() retryLastFailedTurnRequested,
   }) {
     return cancelSpeechToTextRequested();
   }
@@ -3190,6 +3299,7 @@ class _$ChatSessionCancelSpeechToTextRequestedImpl
     TResult? Function(XFile file)? translateSpeechToTextRequested,
     TResult? Function()? cancelSpeechToTextRequested,
     TResult? Function()? uiEffectCleared,
+    TResult? Function()? retryLastFailedTurnRequested,
   }) {
     return cancelSpeechToTextRequested?.call();
   }
@@ -3217,6 +3327,7 @@ class _$ChatSessionCancelSpeechToTextRequestedImpl
     TResult Function(XFile file)? translateSpeechToTextRequested,
     TResult Function()? cancelSpeechToTextRequested,
     TResult Function()? uiEffectCleared,
+    TResult Function()? retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (cancelSpeechToTextRequested != null) {
@@ -3251,6 +3362,8 @@ class _$ChatSessionCancelSpeechToTextRequestedImpl
     required TResult Function(ChatSessionCancelSpeechToTextRequested value)
     cancelSpeechToTextRequested,
     required TResult Function(ChatSessionUiEffectCleared value) uiEffectCleared,
+    required TResult Function(ChatSessionRetryLastFailedTurnRequested value)
+    retryLastFailedTurnRequested,
   }) {
     return cancelSpeechToTextRequested(this);
   }
@@ -3279,6 +3392,8 @@ class _$ChatSessionCancelSpeechToTextRequestedImpl
     TResult? Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult? Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult? Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
   }) {
     return cancelSpeechToTextRequested?.call(this);
   }
@@ -3307,6 +3422,8 @@ class _$ChatSessionCancelSpeechToTextRequestedImpl
     TResult Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (cancelSpeechToTextRequested != null) {
@@ -3387,6 +3504,7 @@ class _$ChatSessionUiEffectClearedImpl implements ChatSessionUiEffectCleared {
     required TResult Function(XFile file) translateSpeechToTextRequested,
     required TResult Function() cancelSpeechToTextRequested,
     required TResult Function() uiEffectCleared,
+    required TResult Function() retryLastFailedTurnRequested,
   }) {
     return uiEffectCleared();
   }
@@ -3414,6 +3532,7 @@ class _$ChatSessionUiEffectClearedImpl implements ChatSessionUiEffectCleared {
     TResult? Function(XFile file)? translateSpeechToTextRequested,
     TResult? Function()? cancelSpeechToTextRequested,
     TResult? Function()? uiEffectCleared,
+    TResult? Function()? retryLastFailedTurnRequested,
   }) {
     return uiEffectCleared?.call();
   }
@@ -3441,6 +3560,7 @@ class _$ChatSessionUiEffectClearedImpl implements ChatSessionUiEffectCleared {
     TResult Function(XFile file)? translateSpeechToTextRequested,
     TResult Function()? cancelSpeechToTextRequested,
     TResult Function()? uiEffectCleared,
+    TResult Function()? retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (uiEffectCleared != null) {
@@ -3475,6 +3595,8 @@ class _$ChatSessionUiEffectClearedImpl implements ChatSessionUiEffectCleared {
     required TResult Function(ChatSessionCancelSpeechToTextRequested value)
     cancelSpeechToTextRequested,
     required TResult Function(ChatSessionUiEffectCleared value) uiEffectCleared,
+    required TResult Function(ChatSessionRetryLastFailedTurnRequested value)
+    retryLastFailedTurnRequested,
   }) {
     return uiEffectCleared(this);
   }
@@ -3503,6 +3625,8 @@ class _$ChatSessionUiEffectClearedImpl implements ChatSessionUiEffectCleared {
     TResult? Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult? Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult? Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
   }) {
     return uiEffectCleared?.call(this);
   }
@@ -3531,6 +3655,8 @@ class _$ChatSessionUiEffectClearedImpl implements ChatSessionUiEffectCleared {
     TResult Function(ChatSessionCancelSpeechToTextRequested value)?
     cancelSpeechToTextRequested,
     TResult Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
     required TResult orElse(),
   }) {
     if (uiEffectCleared != null) {
@@ -3542,4 +3668,241 @@ class _$ChatSessionUiEffectClearedImpl implements ChatSessionUiEffectCleared {
 
 abstract class ChatSessionUiEffectCleared implements ChatSessionEvent {
   const factory ChatSessionUiEffectCleared() = _$ChatSessionUiEffectClearedImpl;
+}
+
+/// @nodoc
+abstract class _$$ChatSessionRetryLastFailedTurnRequestedImplCopyWith<$Res> {
+  factory _$$ChatSessionRetryLastFailedTurnRequestedImplCopyWith(
+    _$ChatSessionRetryLastFailedTurnRequestedImpl value,
+    $Res Function(_$ChatSessionRetryLastFailedTurnRequestedImpl) then,
+  ) = __$$ChatSessionRetryLastFailedTurnRequestedImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$ChatSessionRetryLastFailedTurnRequestedImplCopyWithImpl<$Res>
+    extends
+        _$ChatSessionEventCopyWithImpl<
+          $Res,
+          _$ChatSessionRetryLastFailedTurnRequestedImpl
+        >
+    implements _$$ChatSessionRetryLastFailedTurnRequestedImplCopyWith<$Res> {
+  __$$ChatSessionRetryLastFailedTurnRequestedImplCopyWithImpl(
+    _$ChatSessionRetryLastFailedTurnRequestedImpl _value,
+    $Res Function(_$ChatSessionRetryLastFailedTurnRequestedImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of ChatSessionEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$ChatSessionRetryLastFailedTurnRequestedImpl
+    implements ChatSessionRetryLastFailedTurnRequested {
+  const _$ChatSessionRetryLastFailedTurnRequestedImpl();
+
+  @override
+  String toString() {
+    return 'ChatSessionEvent.retryLastFailedTurnRequested()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ChatSessionRetryLastFailedTurnRequestedImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(List<ChatMessageBase> messages) historyReceived,
+    required TResult Function(ChatSession? session) sessionDocumentReceived,
+    required TResult Function(List<ActiveToolExecutionSummary> executions)
+    toolExecutionsReceived,
+    required TResult Function(
+      String text,
+      String? editedMessageUuid,
+      List<PersistedChatToolIntent> chatToolIntents,
+      List<ToolExecutionIntentRequest> activeToolExecutionIntents,
+    )
+    sendMessageRequested,
+    required TResult Function(MessageAck ack) sendMessageAcknowledged,
+    required TResult Function(Object error) sendMessageFailed,
+    required TResult Function() cancelStreamRequested,
+    required TResult Function() editLastTurnRequested,
+    required TResult Function() editCancelled,
+    required TResult Function(String suggestion) selectSuggestion,
+    required TResult Function(XFile file) translateSpeechToTextRequested,
+    required TResult Function() cancelSpeechToTextRequested,
+    required TResult Function() uiEffectCleared,
+    required TResult Function() retryLastFailedTurnRequested,
+  }) {
+    return retryLastFailedTurnRequested();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(List<ChatMessageBase> messages)? historyReceived,
+    TResult? Function(ChatSession? session)? sessionDocumentReceived,
+    TResult? Function(List<ActiveToolExecutionSummary> executions)?
+    toolExecutionsReceived,
+    TResult? Function(
+      String text,
+      String? editedMessageUuid,
+      List<PersistedChatToolIntent> chatToolIntents,
+      List<ToolExecutionIntentRequest> activeToolExecutionIntents,
+    )?
+    sendMessageRequested,
+    TResult? Function(MessageAck ack)? sendMessageAcknowledged,
+    TResult? Function(Object error)? sendMessageFailed,
+    TResult? Function()? cancelStreamRequested,
+    TResult? Function()? editLastTurnRequested,
+    TResult? Function()? editCancelled,
+    TResult? Function(String suggestion)? selectSuggestion,
+    TResult? Function(XFile file)? translateSpeechToTextRequested,
+    TResult? Function()? cancelSpeechToTextRequested,
+    TResult? Function()? uiEffectCleared,
+    TResult? Function()? retryLastFailedTurnRequested,
+  }) {
+    return retryLastFailedTurnRequested?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(List<ChatMessageBase> messages)? historyReceived,
+    TResult Function(ChatSession? session)? sessionDocumentReceived,
+    TResult Function(List<ActiveToolExecutionSummary> executions)?
+    toolExecutionsReceived,
+    TResult Function(
+      String text,
+      String? editedMessageUuid,
+      List<PersistedChatToolIntent> chatToolIntents,
+      List<ToolExecutionIntentRequest> activeToolExecutionIntents,
+    )?
+    sendMessageRequested,
+    TResult Function(MessageAck ack)? sendMessageAcknowledged,
+    TResult Function(Object error)? sendMessageFailed,
+    TResult Function()? cancelStreamRequested,
+    TResult Function()? editLastTurnRequested,
+    TResult Function()? editCancelled,
+    TResult Function(String suggestion)? selectSuggestion,
+    TResult Function(XFile file)? translateSpeechToTextRequested,
+    TResult Function()? cancelSpeechToTextRequested,
+    TResult Function()? uiEffectCleared,
+    TResult Function()? retryLastFailedTurnRequested,
+    required TResult orElse(),
+  }) {
+    if (retryLastFailedTurnRequested != null) {
+      return retryLastFailedTurnRequested();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ChatSessionHistoryReceived value) historyReceived,
+    required TResult Function(ChatSessionDocumentReceived value)
+    sessionDocumentReceived,
+    required TResult Function(ChatSessionToolExecutionsReceived value)
+    toolExecutionsReceived,
+    required TResult Function(ChatSessionSendMessageRequested value)
+    sendMessageRequested,
+    required TResult Function(ChatSessionSendMessageAcknowledged value)
+    sendMessageAcknowledged,
+    required TResult Function(ChatSessionSendMessageFailed value)
+    sendMessageFailed,
+    required TResult Function(ChatSessionCancelStreamRequested value)
+    cancelStreamRequested,
+    required TResult Function(ChatSessionEditLastTurnRequested value)
+    editLastTurnRequested,
+    required TResult Function(ChatSessionEditCancelled value) editCancelled,
+    required TResult Function(ChatSessionSelectSuggestion value)
+    selectSuggestion,
+    required TResult Function(ChatSessionTranslateSpeechToTextRequested value)
+    translateSpeechToTextRequested,
+    required TResult Function(ChatSessionCancelSpeechToTextRequested value)
+    cancelSpeechToTextRequested,
+    required TResult Function(ChatSessionUiEffectCleared value) uiEffectCleared,
+    required TResult Function(ChatSessionRetryLastFailedTurnRequested value)
+    retryLastFailedTurnRequested,
+  }) {
+    return retryLastFailedTurnRequested(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(ChatSessionHistoryReceived value)? historyReceived,
+    TResult? Function(ChatSessionDocumentReceived value)?
+    sessionDocumentReceived,
+    TResult? Function(ChatSessionToolExecutionsReceived value)?
+    toolExecutionsReceived,
+    TResult? Function(ChatSessionSendMessageRequested value)?
+    sendMessageRequested,
+    TResult? Function(ChatSessionSendMessageAcknowledged value)?
+    sendMessageAcknowledged,
+    TResult? Function(ChatSessionSendMessageFailed value)? sendMessageFailed,
+    TResult? Function(ChatSessionCancelStreamRequested value)?
+    cancelStreamRequested,
+    TResult? Function(ChatSessionEditLastTurnRequested value)?
+    editLastTurnRequested,
+    TResult? Function(ChatSessionEditCancelled value)? editCancelled,
+    TResult? Function(ChatSessionSelectSuggestion value)? selectSuggestion,
+    TResult? Function(ChatSessionTranslateSpeechToTextRequested value)?
+    translateSpeechToTextRequested,
+    TResult? Function(ChatSessionCancelSpeechToTextRequested value)?
+    cancelSpeechToTextRequested,
+    TResult? Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult? Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
+  }) {
+    return retryLastFailedTurnRequested?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ChatSessionHistoryReceived value)? historyReceived,
+    TResult Function(ChatSessionDocumentReceived value)?
+    sessionDocumentReceived,
+    TResult Function(ChatSessionToolExecutionsReceived value)?
+    toolExecutionsReceived,
+    TResult Function(ChatSessionSendMessageRequested value)?
+    sendMessageRequested,
+    TResult Function(ChatSessionSendMessageAcknowledged value)?
+    sendMessageAcknowledged,
+    TResult Function(ChatSessionSendMessageFailed value)? sendMessageFailed,
+    TResult Function(ChatSessionCancelStreamRequested value)?
+    cancelStreamRequested,
+    TResult Function(ChatSessionEditLastTurnRequested value)?
+    editLastTurnRequested,
+    TResult Function(ChatSessionEditCancelled value)? editCancelled,
+    TResult Function(ChatSessionSelectSuggestion value)? selectSuggestion,
+    TResult Function(ChatSessionTranslateSpeechToTextRequested value)?
+    translateSpeechToTextRequested,
+    TResult Function(ChatSessionCancelSpeechToTextRequested value)?
+    cancelSpeechToTextRequested,
+    TResult Function(ChatSessionUiEffectCleared value)? uiEffectCleared,
+    TResult Function(ChatSessionRetryLastFailedTurnRequested value)?
+    retryLastFailedTurnRequested,
+    required TResult orElse(),
+  }) {
+    if (retryLastFailedTurnRequested != null) {
+      return retryLastFailedTurnRequested(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ChatSessionRetryLastFailedTurnRequested
+    implements ChatSessionEvent {
+  const factory ChatSessionRetryLastFailedTurnRequested() =
+      _$ChatSessionRetryLastFailedTurnRequestedImpl;
 }

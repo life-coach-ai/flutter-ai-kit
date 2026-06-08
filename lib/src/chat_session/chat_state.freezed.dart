@@ -36,6 +36,9 @@ mixin _$ChatState {
   int get effectNonce => throw _privateConstructorUsedError;
   ChatUiEffect? get lastEffect => throw _privateConstructorUsedError;
 
+  /// User message server UUID when the last assistant turn failed and retry is available.
+  String? get retryUserMessageServerUuid => throw _privateConstructorUsedError;
+
   /// Create a copy of ChatState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -62,6 +65,7 @@ abstract class $ChatStateCopyWith<$Res> {
     bool isTranscribing,
     int effectNonce,
     ChatUiEffect? lastEffect,
+    String? retryUserMessageServerUuid,
   });
 
   $ChatUiEffectCopyWith<$Res>? get lastEffect;
@@ -95,6 +99,7 @@ class _$ChatStateCopyWithImpl<$Res, $Val extends ChatState>
     Object? isTranscribing = null,
     Object? effectNonce = null,
     Object? lastEffect = freezed,
+    Object? retryUserMessageServerUuid = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -163,6 +168,11 @@ class _$ChatStateCopyWithImpl<$Res, $Val extends ChatState>
                     ? _value.lastEffect
                     : lastEffect // ignore: cast_nullable_to_non_nullable
                         as ChatUiEffect?,
+            retryUserMessageServerUuid:
+                freezed == retryUserMessageServerUuid
+                    ? _value.retryUserMessageServerUuid
+                    : retryUserMessageServerUuid // ignore: cast_nullable_to_non_nullable
+                        as String?,
           )
           as $Val,
     );
@@ -206,6 +216,7 @@ abstract class _$$ChatStateImplCopyWith<$Res>
     bool isTranscribing,
     int effectNonce,
     ChatUiEffect? lastEffect,
+    String? retryUserMessageServerUuid,
   });
 
   @override
@@ -239,6 +250,7 @@ class __$$ChatStateImplCopyWithImpl<$Res>
     Object? isTranscribing = null,
     Object? effectNonce = null,
     Object? lastEffect = freezed,
+    Object? retryUserMessageServerUuid = freezed,
   }) {
     return _then(
       _$ChatStateImpl(
@@ -307,6 +319,11 @@ class __$$ChatStateImplCopyWithImpl<$Res>
                 ? _value.lastEffect
                 : lastEffect // ignore: cast_nullable_to_non_nullable
                     as ChatUiEffect?,
+        retryUserMessageServerUuid:
+            freezed == retryUserMessageServerUuid
+                ? _value.retryUserMessageServerUuid
+                : retryUserMessageServerUuid // ignore: cast_nullable_to_non_nullable
+                    as String?,
       ),
     );
   }
@@ -329,6 +346,7 @@ class _$ChatStateImpl implements _ChatState {
     this.isTranscribing = false,
     this.effectNonce = 0,
     this.lastEffect,
+    this.retryUserMessageServerUuid,
   }) : _visibleMessages = visibleMessages,
        _availableTools = availableTools,
        _usedTools = usedTools,
@@ -405,9 +423,13 @@ class _$ChatStateImpl implements _ChatState {
   @override
   final ChatUiEffect? lastEffect;
 
+  /// User message server UUID when the last assistant turn failed and retry is available.
+  @override
+  final String? retryUserMessageServerUuid;
+
   @override
   String toString() {
-    return 'ChatState(visibleMessages: $visibleMessages, availableTools: $availableTools, isAwaitingAvailableToolsUpdate: $isAwaitingAvailableToolsUpdate, usedTools: $usedTools, activeToolExecutionIds: $activeToolExecutionIds, activeToolExecutions: $activeToolExecutions, isSending: $isSending, isStreamingAssistant: $isStreamingAssistant, composerInitialMessage: $composerInitialMessage, pendingEditAssistantCopy: $pendingEditAssistantCopy, isTranscribing: $isTranscribing, effectNonce: $effectNonce, lastEffect: $lastEffect)';
+    return 'ChatState(visibleMessages: $visibleMessages, availableTools: $availableTools, isAwaitingAvailableToolsUpdate: $isAwaitingAvailableToolsUpdate, usedTools: $usedTools, activeToolExecutionIds: $activeToolExecutionIds, activeToolExecutions: $activeToolExecutions, isSending: $isSending, isStreamingAssistant: $isStreamingAssistant, composerInitialMessage: $composerInitialMessage, pendingEditAssistantCopy: $pendingEditAssistantCopy, isTranscribing: $isTranscribing, effectNonce: $effectNonce, lastEffect: $lastEffect, retryUserMessageServerUuid: $retryUserMessageServerUuid)';
   }
 
   @override
@@ -457,7 +479,13 @@ class _$ChatStateImpl implements _ChatState {
             (identical(other.effectNonce, effectNonce) ||
                 other.effectNonce == effectNonce) &&
             (identical(other.lastEffect, lastEffect) ||
-                other.lastEffect == lastEffect));
+                other.lastEffect == lastEffect) &&
+            (identical(
+                  other.retryUserMessageServerUuid,
+                  retryUserMessageServerUuid,
+                ) ||
+                other.retryUserMessageServerUuid ==
+                    retryUserMessageServerUuid));
   }
 
   @override
@@ -476,6 +504,7 @@ class _$ChatStateImpl implements _ChatState {
     isTranscribing,
     effectNonce,
     lastEffect,
+    retryUserMessageServerUuid,
   );
 
   /// Create a copy of ChatState
@@ -502,6 +531,7 @@ abstract class _ChatState implements ChatState {
     final bool isTranscribing,
     final int effectNonce,
     final ChatUiEffect? lastEffect,
+    final String? retryUserMessageServerUuid,
   }) = _$ChatStateImpl;
 
   @override
@@ -532,6 +562,10 @@ abstract class _ChatState implements ChatState {
   int get effectNonce;
   @override
   ChatUiEffect? get lastEffect;
+
+  /// User message server UUID when the last assistant turn failed and retry is available.
+  @override
+  String? get retryUserMessageServerUuid;
 
   /// Create a copy of ChatState
   /// with the given fields replaced by the non-null parameter values.

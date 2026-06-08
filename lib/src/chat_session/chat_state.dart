@@ -27,5 +27,7 @@ class ChatState with _$ChatState {
     /// Monotonic nonce so [BlocListener] can observe each effect once.
     @Default(0) int effectNonce,
     ChatUiEffect? lastEffect,
+    /// User message server UUID when the last assistant turn failed and retry is available.
+    String? retryUserMessageServerUuid,
   }) = _ChatState;
 }

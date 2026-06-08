@@ -53,6 +53,9 @@ class ChatSessionBloc extends Bloc<ChatSessionEvent, ChatState> {
     on<ChatSessionTranslateSpeechToTextRequested>(_onTranslateSpeechToText);
     on<ChatSessionCancelSpeechToTextRequested>(_onCancelSpeechToText);
     on<ChatSessionUiEffectCleared>(_onUiEffectCleared);
+    on<ChatSessionRetryLastFailedTurnRequested>(
+      _onRetryLastFailedTurnRequested,
+    );
 
     _subscribe();
   }
@@ -129,6 +132,9 @@ class ChatSessionBloc extends Bloc<ChatSessionEvent, ChatState> {
         ),
         cancelSpeechToText: () async =>
             add(const ChatSessionEvent.cancelSpeechToTextRequested()),
+        retryLastFailedTurn: () async => add(
+          const ChatSessionEvent.retryLastFailedTurnRequested(),
+        ),
       );
 
   void clearUiEffect() => add(const ChatSessionEvent.uiEffectCleared());
@@ -271,8 +277,14 @@ class ChatSessionBloc extends Bloc<ChatSessionEvent, ChatState> {
 
     emit(
       state.copyWith(
-        composerInitialMessage: persistedMessageToUi(user),
-        pendingEditAssistantCopy: persistedMessageToUi(assistant),
+        composerInitialMessage: persistedMessageToUi(
+          user,
+          assistantErrorLabel: _errorMessageLabel,
+        ),
+        pendingEditAssistantCopy: persistedMessageToUi(
+          assistant,
+          assistantErrorLabel: _errorMessageLabel,
+        ),
       ),
     );
   }
@@ -362,42 +374,44 @@ class ChatSessionBloc extends Bloc<ChatSessionEvent, ChatState> {
 
     emit(
       state.copyWith(
-        visibleMessages: persistedMessagesToUi(_history),
+        visibleMessages: persistedMessagesToUi(
+          _history,
+          assistantErrorLabel: _errorMessageLabel,
+        ),
         availableTools: _session?.availableTools ?? const [],
         activeToolExecutionIds: _session?.activeToolExecutionIds ?? const [],
         activeToolExecutions: _executions,
         isStreamingAssistant: generationInFlight ||
             state.isSending ||
             _pendingAssistantUuid != null,
+        retryUserMessageServerUuid: retryableUserMessageServerUuid(_history),
       ),
     );
-
-    _applyGenerationFailureOverlay(emit, generationStatus);
   }
 
-  void _applyGenerationFailureOverlay(
+  Future<void> _onRetryLastFailedTurnRequested(
+    ChatSessionRetryLastFailedTurnRequested event,
     Emitter<ChatState> emit,
-    AssistantGenerationStatus? generationStatus,
-  ) {
-    if (generationStatus != AssistantGenerationStatus.failed) {
+  ) async {
+    if (state.isSending ||
+        state.isStreamingAssistant ||
+        state.isTranscribing) {
       return;
     }
-    final messages = List<ChatMessage>.from(state.visibleMessages);
-    if (messages.isEmpty) {
+    final userMessageUuid = state.retryUserMessageServerUuid;
+    if (userMessageUuid == null) {
       return;
     }
-    final last = messages.last;
-    if (!last.origin.isLlm || (last.text != null && last.text!.isNotEmpty)) {
+    final userMessage = findUserMessageByServerUuid(_history, userMessageUuid);
+    if (userMessage == null) {
       return;
     }
-    last.append(_errorMessageLabel);
-    emit(
-      state.copyWith(
-        visibleMessages: messages,
-        effectNonce: state.effectNonce + 1,
-        lastEffect: ChatUiEffect.showLlmException(
-          error: const LlmFailureException('Assistant generation failed'),
-        ),
+
+    add(
+      ChatSessionEvent.sendMessageRequested(
+        text: userMessage.text,
+        editedMessageUuid: userMessageUuid,
+        chatToolIntents: userMessage.chatToolIntents ?? const [],
       ),
     );
   }

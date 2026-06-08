@@ -35,6 +35,7 @@ mixin _$ChatIntent {
     )
     translateSpeechToText,
     required TResult Function() cancelSpeechToText,
+    required TResult Function() retryLastFailedTurn,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
@@ -51,6 +52,7 @@ mixin _$ChatIntent {
     TResult? Function(XFile file, Iterable<Attachment> currentAttachments)?
     translateSpeechToText,
     TResult? Function()? cancelSpeechToText,
+    TResult? Function()? retryLastFailedTurn,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
@@ -67,6 +69,7 @@ mixin _$ChatIntent {
     TResult Function(XFile file, Iterable<Attachment> currentAttachments)?
     translateSpeechToText,
     TResult Function()? cancelSpeechToText,
+    TResult Function()? retryLastFailedTurn,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -79,6 +82,7 @@ mixin _$ChatIntent {
     required TResult Function(_TranslateSpeechToText value)
     translateSpeechToText,
     required TResult Function(_CancelSpeechToText value) cancelSpeechToText,
+    required TResult Function(_RetryLastFailedTurn value) retryLastFailedTurn,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
@@ -89,6 +93,7 @@ mixin _$ChatIntent {
     TResult? Function(_SelectSuggestion value)? selectSuggestion,
     TResult? Function(_TranslateSpeechToText value)? translateSpeechToText,
     TResult? Function(_CancelSpeechToText value)? cancelSpeechToText,
+    TResult? Function(_RetryLastFailedTurn value)? retryLastFailedTurn,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
@@ -99,6 +104,7 @@ mixin _$ChatIntent {
     TResult Function(_SelectSuggestion value)? selectSuggestion,
     TResult Function(_TranslateSpeechToText value)? translateSpeechToText,
     TResult Function(_CancelSpeechToText value)? cancelSpeechToText,
+    TResult Function(_RetryLastFailedTurn value)? retryLastFailedTurn,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
@@ -250,6 +256,7 @@ class _$SendMessageImpl implements _SendMessage {
     )
     translateSpeechToText,
     required TResult Function() cancelSpeechToText,
+    required TResult Function() retryLastFailedTurn,
   }) {
     return sendMessage(text, attachments, editedUserMessageId);
   }
@@ -270,6 +277,7 @@ class _$SendMessageImpl implements _SendMessage {
     TResult? Function(XFile file, Iterable<Attachment> currentAttachments)?
     translateSpeechToText,
     TResult? Function()? cancelSpeechToText,
+    TResult? Function()? retryLastFailedTurn,
   }) {
     return sendMessage?.call(text, attachments, editedUserMessageId);
   }
@@ -290,6 +298,7 @@ class _$SendMessageImpl implements _SendMessage {
     TResult Function(XFile file, Iterable<Attachment> currentAttachments)?
     translateSpeechToText,
     TResult Function()? cancelSpeechToText,
+    TResult Function()? retryLastFailedTurn,
     required TResult orElse(),
   }) {
     if (sendMessage != null) {
@@ -309,6 +318,7 @@ class _$SendMessageImpl implements _SendMessage {
     required TResult Function(_TranslateSpeechToText value)
     translateSpeechToText,
     required TResult Function(_CancelSpeechToText value) cancelSpeechToText,
+    required TResult Function(_RetryLastFailedTurn value) retryLastFailedTurn,
   }) {
     return sendMessage(this);
   }
@@ -323,6 +333,7 @@ class _$SendMessageImpl implements _SendMessage {
     TResult? Function(_SelectSuggestion value)? selectSuggestion,
     TResult? Function(_TranslateSpeechToText value)? translateSpeechToText,
     TResult? Function(_CancelSpeechToText value)? cancelSpeechToText,
+    TResult? Function(_RetryLastFailedTurn value)? retryLastFailedTurn,
   }) {
     return sendMessage?.call(this);
   }
@@ -337,6 +348,7 @@ class _$SendMessageImpl implements _SendMessage {
     TResult Function(_SelectSuggestion value)? selectSuggestion,
     TResult Function(_TranslateSpeechToText value)? translateSpeechToText,
     TResult Function(_CancelSpeechToText value)? cancelSpeechToText,
+    TResult Function(_RetryLastFailedTurn value)? retryLastFailedTurn,
     required TResult orElse(),
   }) {
     if (sendMessage != null) {
@@ -423,6 +435,7 @@ class _$CancelStreamImpl implements _CancelStream {
     )
     translateSpeechToText,
     required TResult Function() cancelSpeechToText,
+    required TResult Function() retryLastFailedTurn,
   }) {
     return cancelStream();
   }
@@ -443,6 +456,7 @@ class _$CancelStreamImpl implements _CancelStream {
     TResult? Function(XFile file, Iterable<Attachment> currentAttachments)?
     translateSpeechToText,
     TResult? Function()? cancelSpeechToText,
+    TResult? Function()? retryLastFailedTurn,
   }) {
     return cancelStream?.call();
   }
@@ -463,6 +477,7 @@ class _$CancelStreamImpl implements _CancelStream {
     TResult Function(XFile file, Iterable<Attachment> currentAttachments)?
     translateSpeechToText,
     TResult Function()? cancelSpeechToText,
+    TResult Function()? retryLastFailedTurn,
     required TResult orElse(),
   }) {
     if (cancelStream != null) {
@@ -482,6 +497,7 @@ class _$CancelStreamImpl implements _CancelStream {
     required TResult Function(_TranslateSpeechToText value)
     translateSpeechToText,
     required TResult Function(_CancelSpeechToText value) cancelSpeechToText,
+    required TResult Function(_RetryLastFailedTurn value) retryLastFailedTurn,
   }) {
     return cancelStream(this);
   }
@@ -496,6 +512,7 @@ class _$CancelStreamImpl implements _CancelStream {
     TResult? Function(_SelectSuggestion value)? selectSuggestion,
     TResult? Function(_TranslateSpeechToText value)? translateSpeechToText,
     TResult? Function(_CancelSpeechToText value)? cancelSpeechToText,
+    TResult? Function(_RetryLastFailedTurn value)? retryLastFailedTurn,
   }) {
     return cancelStream?.call(this);
   }
@@ -510,6 +527,7 @@ class _$CancelStreamImpl implements _CancelStream {
     TResult Function(_SelectSuggestion value)? selectSuggestion,
     TResult Function(_TranslateSpeechToText value)? translateSpeechToText,
     TResult Function(_CancelSpeechToText value)? cancelSpeechToText,
+    TResult Function(_RetryLastFailedTurn value)? retryLastFailedTurn,
     required TResult orElse(),
   }) {
     if (cancelStream != null) {
@@ -582,6 +600,7 @@ class _$StartEditLastTurnImpl implements _StartEditLastTurn {
     )
     translateSpeechToText,
     required TResult Function() cancelSpeechToText,
+    required TResult Function() retryLastFailedTurn,
   }) {
     return startEditLastTurn();
   }
@@ -602,6 +621,7 @@ class _$StartEditLastTurnImpl implements _StartEditLastTurn {
     TResult? Function(XFile file, Iterable<Attachment> currentAttachments)?
     translateSpeechToText,
     TResult? Function()? cancelSpeechToText,
+    TResult? Function()? retryLastFailedTurn,
   }) {
     return startEditLastTurn?.call();
   }
@@ -622,6 +642,7 @@ class _$StartEditLastTurnImpl implements _StartEditLastTurn {
     TResult Function(XFile file, Iterable<Attachment> currentAttachments)?
     translateSpeechToText,
     TResult Function()? cancelSpeechToText,
+    TResult Function()? retryLastFailedTurn,
     required TResult orElse(),
   }) {
     if (startEditLastTurn != null) {
@@ -641,6 +662,7 @@ class _$StartEditLastTurnImpl implements _StartEditLastTurn {
     required TResult Function(_TranslateSpeechToText value)
     translateSpeechToText,
     required TResult Function(_CancelSpeechToText value) cancelSpeechToText,
+    required TResult Function(_RetryLastFailedTurn value) retryLastFailedTurn,
   }) {
     return startEditLastTurn(this);
   }
@@ -655,6 +677,7 @@ class _$StartEditLastTurnImpl implements _StartEditLastTurn {
     TResult? Function(_SelectSuggestion value)? selectSuggestion,
     TResult? Function(_TranslateSpeechToText value)? translateSpeechToText,
     TResult? Function(_CancelSpeechToText value)? cancelSpeechToText,
+    TResult? Function(_RetryLastFailedTurn value)? retryLastFailedTurn,
   }) {
     return startEditLastTurn?.call(this);
   }
@@ -669,6 +692,7 @@ class _$StartEditLastTurnImpl implements _StartEditLastTurn {
     TResult Function(_SelectSuggestion value)? selectSuggestion,
     TResult Function(_TranslateSpeechToText value)? translateSpeechToText,
     TResult Function(_CancelSpeechToText value)? cancelSpeechToText,
+    TResult Function(_RetryLastFailedTurn value)? retryLastFailedTurn,
     required TResult orElse(),
   }) {
     if (startEditLastTurn != null) {
@@ -741,6 +765,7 @@ class _$CancelEditImpl implements _CancelEdit {
     )
     translateSpeechToText,
     required TResult Function() cancelSpeechToText,
+    required TResult Function() retryLastFailedTurn,
   }) {
     return cancelEdit();
   }
@@ -761,6 +786,7 @@ class _$CancelEditImpl implements _CancelEdit {
     TResult? Function(XFile file, Iterable<Attachment> currentAttachments)?
     translateSpeechToText,
     TResult? Function()? cancelSpeechToText,
+    TResult? Function()? retryLastFailedTurn,
   }) {
     return cancelEdit?.call();
   }
@@ -781,6 +807,7 @@ class _$CancelEditImpl implements _CancelEdit {
     TResult Function(XFile file, Iterable<Attachment> currentAttachments)?
     translateSpeechToText,
     TResult Function()? cancelSpeechToText,
+    TResult Function()? retryLastFailedTurn,
     required TResult orElse(),
   }) {
     if (cancelEdit != null) {
@@ -800,6 +827,7 @@ class _$CancelEditImpl implements _CancelEdit {
     required TResult Function(_TranslateSpeechToText value)
     translateSpeechToText,
     required TResult Function(_CancelSpeechToText value) cancelSpeechToText,
+    required TResult Function(_RetryLastFailedTurn value) retryLastFailedTurn,
   }) {
     return cancelEdit(this);
   }
@@ -814,6 +842,7 @@ class _$CancelEditImpl implements _CancelEdit {
     TResult? Function(_SelectSuggestion value)? selectSuggestion,
     TResult? Function(_TranslateSpeechToText value)? translateSpeechToText,
     TResult? Function(_CancelSpeechToText value)? cancelSpeechToText,
+    TResult? Function(_RetryLastFailedTurn value)? retryLastFailedTurn,
   }) {
     return cancelEdit?.call(this);
   }
@@ -828,6 +857,7 @@ class _$CancelEditImpl implements _CancelEdit {
     TResult Function(_SelectSuggestion value)? selectSuggestion,
     TResult Function(_TranslateSpeechToText value)? translateSpeechToText,
     TResult Function(_CancelSpeechToText value)? cancelSpeechToText,
+    TResult Function(_RetryLastFailedTurn value)? retryLastFailedTurn,
     required TResult orElse(),
   }) {
     if (cancelEdit != null) {
@@ -931,6 +961,7 @@ class _$SelectSuggestionImpl implements _SelectSuggestion {
     )
     translateSpeechToText,
     required TResult Function() cancelSpeechToText,
+    required TResult Function() retryLastFailedTurn,
   }) {
     return selectSuggestion(suggestion);
   }
@@ -951,6 +982,7 @@ class _$SelectSuggestionImpl implements _SelectSuggestion {
     TResult? Function(XFile file, Iterable<Attachment> currentAttachments)?
     translateSpeechToText,
     TResult? Function()? cancelSpeechToText,
+    TResult? Function()? retryLastFailedTurn,
   }) {
     return selectSuggestion?.call(suggestion);
   }
@@ -971,6 +1003,7 @@ class _$SelectSuggestionImpl implements _SelectSuggestion {
     TResult Function(XFile file, Iterable<Attachment> currentAttachments)?
     translateSpeechToText,
     TResult Function()? cancelSpeechToText,
+    TResult Function()? retryLastFailedTurn,
     required TResult orElse(),
   }) {
     if (selectSuggestion != null) {
@@ -990,6 +1023,7 @@ class _$SelectSuggestionImpl implements _SelectSuggestion {
     required TResult Function(_TranslateSpeechToText value)
     translateSpeechToText,
     required TResult Function(_CancelSpeechToText value) cancelSpeechToText,
+    required TResult Function(_RetryLastFailedTurn value) retryLastFailedTurn,
   }) {
     return selectSuggestion(this);
   }
@@ -1004,6 +1038,7 @@ class _$SelectSuggestionImpl implements _SelectSuggestion {
     TResult? Function(_SelectSuggestion value)? selectSuggestion,
     TResult? Function(_TranslateSpeechToText value)? translateSpeechToText,
     TResult? Function(_CancelSpeechToText value)? cancelSpeechToText,
+    TResult? Function(_RetryLastFailedTurn value)? retryLastFailedTurn,
   }) {
     return selectSuggestion?.call(this);
   }
@@ -1018,6 +1053,7 @@ class _$SelectSuggestionImpl implements _SelectSuggestion {
     TResult Function(_SelectSuggestion value)? selectSuggestion,
     TResult Function(_TranslateSpeechToText value)? translateSpeechToText,
     TResult Function(_CancelSpeechToText value)? cancelSpeechToText,
+    TResult Function(_RetryLastFailedTurn value)? retryLastFailedTurn,
     required TResult orElse(),
   }) {
     if (selectSuggestion != null) {
@@ -1149,6 +1185,7 @@ class _$TranslateSpeechToTextImpl implements _TranslateSpeechToText {
     )
     translateSpeechToText,
     required TResult Function() cancelSpeechToText,
+    required TResult Function() retryLastFailedTurn,
   }) {
     return translateSpeechToText(file, currentAttachments);
   }
@@ -1169,6 +1206,7 @@ class _$TranslateSpeechToTextImpl implements _TranslateSpeechToText {
     TResult? Function(XFile file, Iterable<Attachment> currentAttachments)?
     translateSpeechToText,
     TResult? Function()? cancelSpeechToText,
+    TResult? Function()? retryLastFailedTurn,
   }) {
     return translateSpeechToText?.call(file, currentAttachments);
   }
@@ -1189,6 +1227,7 @@ class _$TranslateSpeechToTextImpl implements _TranslateSpeechToText {
     TResult Function(XFile file, Iterable<Attachment> currentAttachments)?
     translateSpeechToText,
     TResult Function()? cancelSpeechToText,
+    TResult Function()? retryLastFailedTurn,
     required TResult orElse(),
   }) {
     if (translateSpeechToText != null) {
@@ -1208,6 +1247,7 @@ class _$TranslateSpeechToTextImpl implements _TranslateSpeechToText {
     required TResult Function(_TranslateSpeechToText value)
     translateSpeechToText,
     required TResult Function(_CancelSpeechToText value) cancelSpeechToText,
+    required TResult Function(_RetryLastFailedTurn value) retryLastFailedTurn,
   }) {
     return translateSpeechToText(this);
   }
@@ -1222,6 +1262,7 @@ class _$TranslateSpeechToTextImpl implements _TranslateSpeechToText {
     TResult? Function(_SelectSuggestion value)? selectSuggestion,
     TResult? Function(_TranslateSpeechToText value)? translateSpeechToText,
     TResult? Function(_CancelSpeechToText value)? cancelSpeechToText,
+    TResult? Function(_RetryLastFailedTurn value)? retryLastFailedTurn,
   }) {
     return translateSpeechToText?.call(this);
   }
@@ -1236,6 +1277,7 @@ class _$TranslateSpeechToTextImpl implements _TranslateSpeechToText {
     TResult Function(_SelectSuggestion value)? selectSuggestion,
     TResult Function(_TranslateSpeechToText value)? translateSpeechToText,
     TResult Function(_CancelSpeechToText value)? cancelSpeechToText,
+    TResult Function(_RetryLastFailedTurn value)? retryLastFailedTurn,
     required TResult orElse(),
   }) {
     if (translateSpeechToText != null) {
@@ -1320,6 +1362,7 @@ class _$CancelSpeechToTextImpl implements _CancelSpeechToText {
     )
     translateSpeechToText,
     required TResult Function() cancelSpeechToText,
+    required TResult Function() retryLastFailedTurn,
   }) {
     return cancelSpeechToText();
   }
@@ -1340,6 +1383,7 @@ class _$CancelSpeechToTextImpl implements _CancelSpeechToText {
     TResult? Function(XFile file, Iterable<Attachment> currentAttachments)?
     translateSpeechToText,
     TResult? Function()? cancelSpeechToText,
+    TResult? Function()? retryLastFailedTurn,
   }) {
     return cancelSpeechToText?.call();
   }
@@ -1360,6 +1404,7 @@ class _$CancelSpeechToTextImpl implements _CancelSpeechToText {
     TResult Function(XFile file, Iterable<Attachment> currentAttachments)?
     translateSpeechToText,
     TResult Function()? cancelSpeechToText,
+    TResult Function()? retryLastFailedTurn,
     required TResult orElse(),
   }) {
     if (cancelSpeechToText != null) {
@@ -1379,6 +1424,7 @@ class _$CancelSpeechToTextImpl implements _CancelSpeechToText {
     required TResult Function(_TranslateSpeechToText value)
     translateSpeechToText,
     required TResult Function(_CancelSpeechToText value) cancelSpeechToText,
+    required TResult Function(_RetryLastFailedTurn value) retryLastFailedTurn,
   }) {
     return cancelSpeechToText(this);
   }
@@ -1393,6 +1439,7 @@ class _$CancelSpeechToTextImpl implements _CancelSpeechToText {
     TResult? Function(_SelectSuggestion value)? selectSuggestion,
     TResult? Function(_TranslateSpeechToText value)? translateSpeechToText,
     TResult? Function(_CancelSpeechToText value)? cancelSpeechToText,
+    TResult? Function(_RetryLastFailedTurn value)? retryLastFailedTurn,
   }) {
     return cancelSpeechToText?.call(this);
   }
@@ -1407,6 +1454,7 @@ class _$CancelSpeechToTextImpl implements _CancelSpeechToText {
     TResult Function(_SelectSuggestion value)? selectSuggestion,
     TResult Function(_TranslateSpeechToText value)? translateSpeechToText,
     TResult Function(_CancelSpeechToText value)? cancelSpeechToText,
+    TResult Function(_RetryLastFailedTurn value)? retryLastFailedTurn,
     required TResult orElse(),
   }) {
     if (cancelSpeechToText != null) {
@@ -1418,4 +1466,170 @@ class _$CancelSpeechToTextImpl implements _CancelSpeechToText {
 
 abstract class _CancelSpeechToText implements ChatIntent {
   const factory _CancelSpeechToText() = _$CancelSpeechToTextImpl;
+}
+
+/// @nodoc
+abstract class _$$RetryLastFailedTurnImplCopyWith<$Res> {
+  factory _$$RetryLastFailedTurnImplCopyWith(
+    _$RetryLastFailedTurnImpl value,
+    $Res Function(_$RetryLastFailedTurnImpl) then,
+  ) = __$$RetryLastFailedTurnImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$RetryLastFailedTurnImplCopyWithImpl<$Res>
+    extends _$ChatIntentCopyWithImpl<$Res, _$RetryLastFailedTurnImpl>
+    implements _$$RetryLastFailedTurnImplCopyWith<$Res> {
+  __$$RetryLastFailedTurnImplCopyWithImpl(
+    _$RetryLastFailedTurnImpl _value,
+    $Res Function(_$RetryLastFailedTurnImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of ChatIntent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$RetryLastFailedTurnImpl implements _RetryLastFailedTurn {
+  const _$RetryLastFailedTurnImpl();
+
+  @override
+  String toString() {
+    return 'ChatIntent.retryLastFailedTurn()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$RetryLastFailedTurnImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+      String text,
+      Iterable<Attachment> attachments,
+      String? editedUserMessageId,
+    )
+    sendMessage,
+    required TResult Function() cancelStream,
+    required TResult Function() startEditLastTurn,
+    required TResult Function() cancelEdit,
+    required TResult Function(String suggestion) selectSuggestion,
+    required TResult Function(
+      XFile file,
+      Iterable<Attachment> currentAttachments,
+    )
+    translateSpeechToText,
+    required TResult Function() cancelSpeechToText,
+    required TResult Function() retryLastFailedTurn,
+  }) {
+    return retryLastFailedTurn();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+      String text,
+      Iterable<Attachment> attachments,
+      String? editedUserMessageId,
+    )?
+    sendMessage,
+    TResult? Function()? cancelStream,
+    TResult? Function()? startEditLastTurn,
+    TResult? Function()? cancelEdit,
+    TResult? Function(String suggestion)? selectSuggestion,
+    TResult? Function(XFile file, Iterable<Attachment> currentAttachments)?
+    translateSpeechToText,
+    TResult? Function()? cancelSpeechToText,
+    TResult? Function()? retryLastFailedTurn,
+  }) {
+    return retryLastFailedTurn?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+      String text,
+      Iterable<Attachment> attachments,
+      String? editedUserMessageId,
+    )?
+    sendMessage,
+    TResult Function()? cancelStream,
+    TResult Function()? startEditLastTurn,
+    TResult Function()? cancelEdit,
+    TResult Function(String suggestion)? selectSuggestion,
+    TResult Function(XFile file, Iterable<Attachment> currentAttachments)?
+    translateSpeechToText,
+    TResult Function()? cancelSpeechToText,
+    TResult Function()? retryLastFailedTurn,
+    required TResult orElse(),
+  }) {
+    if (retryLastFailedTurn != null) {
+      return retryLastFailedTurn();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_SendMessage value) sendMessage,
+    required TResult Function(_CancelStream value) cancelStream,
+    required TResult Function(_StartEditLastTurn value) startEditLastTurn,
+    required TResult Function(_CancelEdit value) cancelEdit,
+    required TResult Function(_SelectSuggestion value) selectSuggestion,
+    required TResult Function(_TranslateSpeechToText value)
+    translateSpeechToText,
+    required TResult Function(_CancelSpeechToText value) cancelSpeechToText,
+    required TResult Function(_RetryLastFailedTurn value) retryLastFailedTurn,
+  }) {
+    return retryLastFailedTurn(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_SendMessage value)? sendMessage,
+    TResult? Function(_CancelStream value)? cancelStream,
+    TResult? Function(_StartEditLastTurn value)? startEditLastTurn,
+    TResult? Function(_CancelEdit value)? cancelEdit,
+    TResult? Function(_SelectSuggestion value)? selectSuggestion,
+    TResult? Function(_TranslateSpeechToText value)? translateSpeechToText,
+    TResult? Function(_CancelSpeechToText value)? cancelSpeechToText,
+    TResult? Function(_RetryLastFailedTurn value)? retryLastFailedTurn,
+  }) {
+    return retryLastFailedTurn?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_SendMessage value)? sendMessage,
+    TResult Function(_CancelStream value)? cancelStream,
+    TResult Function(_StartEditLastTurn value)? startEditLastTurn,
+    TResult Function(_CancelEdit value)? cancelEdit,
+    TResult Function(_SelectSuggestion value)? selectSuggestion,
+    TResult Function(_TranslateSpeechToText value)? translateSpeechToText,
+    TResult Function(_CancelSpeechToText value)? cancelSpeechToText,
+    TResult Function(_RetryLastFailedTurn value)? retryLastFailedTurn,
+    required TResult orElse(),
+  }) {
+    if (retryLastFailedTurn != null) {
+      return retryLastFailedTurn(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _RetryLastFailedTurn implements ChatIntent {
+  const factory _RetryLastFailedTurn() = _$RetryLastFailedTurnImpl;
 }

@@ -56,6 +56,9 @@ class _LlmChatViewState extends State<LlmChatView>
       widget.state.composerInitialMessage == null &&
       widget.state.pendingEditAssistantCopy == null;
 
+  bool get _canRetry =>
+      _canEdit && widget.state.retryUserMessageServerUuid != null;
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -90,6 +93,15 @@ class _LlmChatViewState extends State<LlmChatView>
                               ChatIntent.selectSuggestion(s),
                             ),
                           ),
+                      canRetryLastFailedTurn: _canRetry,
+                      onRetryLastFailedTurn:
+                          _canRetry
+                              ? () => unawaited(
+                                widget.onIntent(
+                                  const ChatIntent.retryLastFailedTurn(),
+                                ),
+                              )
+                              : null,
                     ),
                   ],
                 ),

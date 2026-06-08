@@ -8,24 +8,105 @@ import 'fakes/fake_repositories.dart';
 
 void main() {
   group('persistedMessagesToUi', () {
+    const errorLabel = 'Error generating assistant response';
+
     test('maps user and assistant rows', () {
-      final messages = persistedMessagesToUi([
-        const UserChatMessage(
-          text: 'hello',
-          serverUuid: 'user-1',
-        ),
-        const AssistantChatMessage(
-          text: 'hi there',
-          serverUuid: 'assistant-1',
-          metadata: {'yi_jing_hexagram': 1},
-        ),
-      ]);
+      final messages = persistedMessagesToUi(
+        [
+          const UserChatMessage(
+            text: 'hello',
+            serverUuid: 'user-1',
+          ),
+          const AssistantChatMessage(
+            text: 'hi there',
+            serverUuid: 'assistant-1',
+            metadata: {'yi_jing_hexagram': 1},
+          ),
+        ],
+        assistantErrorLabel: errorLabel,
+      );
 
       expect(messages, hasLength(2));
       expect(messages.first.text, 'hello');
       expect(messages.first.serverUuid, 'user-1');
       expect(messages.last.text, 'hi there');
       expect(messages.last.metadata?['yi_jing_hexagram'], 1);
+    });
+
+    test('maps failed assistant with empty text to error label', () {
+      final messages = persistedMessagesToUi(
+        [
+          const AssistantChatMessage(
+            text: '',
+            serverUuid: 'assistant-1',
+            generationStatus: AssistantGenerationStatus.failed,
+          ),
+        ],
+        assistantErrorLabel: errorLabel,
+      );
+
+      expect(messages.single.text, errorLabel);
+      expect(messages.single.metadata?['generation_status'], 'failed');
+    });
+  });
+
+  group('retryableUserMessageServerUuid', () {
+    test('returns parent uuid when last assistant turn failed', () {
+      expect(
+        retryableUserMessageServerUuid([
+          const UserChatMessage(text: 'hi', serverUuid: 'u1'),
+          const AssistantChatMessage(
+            text: '',
+            serverUuid: 'a1',
+            parentMessageUuid: 'u1',
+            generationStatus: AssistantGenerationStatus.failed,
+          ),
+        ]),
+        'u1',
+      );
+    });
+
+    test('returns null when parent message uuid is missing', () {
+      expect(
+        retryableUserMessageServerUuid([
+          const UserChatMessage(text: 'hi', serverUuid: 'u1'),
+          const AssistantChatMessage(
+            text: '',
+            serverUuid: 'a1',
+            generationStatus: AssistantGenerationStatus.failed,
+          ),
+        ]),
+        isNull,
+      );
+    });
+
+    test('returns null when parent user row is not in history', () {
+      expect(
+        retryableUserMessageServerUuid([
+          const AssistantChatMessage(
+            text: '',
+            serverUuid: 'a1',
+            parentMessageUuid: 'missing-u',
+            generationStatus: AssistantGenerationStatus.failed,
+          ),
+        ]),
+        isNull,
+      );
+    });
+
+    test('returns null when last assistant completed', () {
+      expect(
+        retryableUserMessageServerUuid([
+          const UserChatMessage(text: 'hi', serverUuid: 'u1'),
+          const AssistantChatMessage(
+            text: 'ok',
+            serverUuid: 'a1',
+            parentMessageUuid: 'u1',
+            generationStatus: AssistantGenerationStatus.completed,
+          ),
+        ]),
+        isNull,
+      );
     });
   });
 
@@ -270,6 +351,148 @@ void main() {
         intents.single.source,
         ChatToolIntentSource.fromAvailableToolsUi,
       );
+    });
+
+    test('failed last assistant shows error text and retry uuid without effect',
+        () async {
+      const errorLabel = 'Error generating assistant response';
+      final chatRepo = FakePersistentChatSessionRepository();
+      final toolRepo = FakeAssyncToolExecutionRepository();
+      final transcriptionRepo = FakeTranscriptionRepository();
+
+      final bloc = ChatSessionBloc(
+        chatSessionId: 'chat-1',
+        chatRepository: chatRepo,
+        toolExecutionRepository: toolRepo,
+        transcriptionRepository: transcriptionRepo,
+        cancelMessageLabel: 'CANCEL',
+        errorMessageLabel: errorLabel,
+      );
+      addTearDown(bloc.close);
+
+      chatRepo.emitHistory([
+        const UserChatMessage(text: 'hi', serverUuid: 'u1'),
+        const AssistantChatMessage(
+          text: '',
+          serverUuid: 'a1',
+          parentMessageUuid: 'u1',
+          generationStatus: AssistantGenerationStatus.failed,
+        ),
+      ]);
+
+      await bloc.stream.firstWhere(
+        (state) => state.retryUserMessageServerUuid == 'u1',
+      );
+
+      expect(bloc.state.visibleMessages.last.text, errorLabel);
+      expect(bloc.state.lastEffect, isNull);
+      expect(bloc.state.isStreamingAssistant, isFalse);
+    });
+
+    test('new message after failure clears retry but keeps error text', () async {
+      const errorLabel = 'Error generating assistant response';
+      final chatRepo = FakePersistentChatSessionRepository();
+      final toolRepo = FakeAssyncToolExecutionRepository();
+      final transcriptionRepo = FakeTranscriptionRepository();
+
+      final bloc = ChatSessionBloc(
+        chatSessionId: 'chat-1',
+        chatRepository: chatRepo,
+        toolExecutionRepository: toolRepo,
+        transcriptionRepository: transcriptionRepo,
+        cancelMessageLabel: 'CANCEL',
+        errorMessageLabel: errorLabel,
+      );
+      addTearDown(bloc.close);
+
+      chatRepo.emitHistory([
+        const UserChatMessage(text: 'hi', serverUuid: 'u1'),
+        const AssistantChatMessage(
+          text: '',
+          serverUuid: 'a1',
+          parentMessageUuid: 'u1',
+          generationStatus: AssistantGenerationStatus.failed,
+        ),
+      ]);
+
+      await bloc.stream.firstWhere(
+        (state) => state.retryUserMessageServerUuid == 'u1',
+      );
+
+      chatRepo.emitHistory([
+        const UserChatMessage(text: 'hi', serverUuid: 'u1'),
+        const AssistantChatMessage(
+          text: '',
+          serverUuid: 'a1',
+          parentMessageUuid: 'u1',
+          generationStatus: AssistantGenerationStatus.failed,
+        ),
+        const UserChatMessage(text: 'next', serverUuid: 'u2'),
+        const AssistantChatMessage(
+          text: '',
+          serverUuid: 'a2',
+          generationStatus: AssistantGenerationStatus.generating,
+        ),
+      ]);
+
+      await bloc.stream.firstWhere(
+        (state) => state.retryUserMessageServerUuid == null,
+      );
+
+      expect(bloc.state.visibleMessages[1].text, errorLabel);
+      expect(bloc.state.visibleMessages[1].metadata?['generation_status'],
+          'failed');
+    });
+
+    test('retryLastFailedTurn resends with edited message uuid', () async {
+      const errorLabel = 'Error generating assistant response';
+      final chatRepo = FakePersistentChatSessionRepository();
+      final toolRepo = FakeAssyncToolExecutionRepository();
+      final transcriptionRepo = FakeTranscriptionRepository();
+
+      final bloc = ChatSessionBloc(
+        chatSessionId: 'chat-1',
+        chatRepository: chatRepo,
+        toolExecutionRepository: toolRepo,
+        transcriptionRepository: transcriptionRepo,
+        cancelMessageLabel: 'CANCEL',
+        errorMessageLabel: errorLabel,
+      );
+      addTearDown(bloc.close);
+
+      chatRepo.emitHistory([
+        UserChatMessage(
+          text: 'hi',
+          serverUuid: 'u1',
+          chatToolIntents: const [
+            PersistedChatToolIntent(
+              toolId: 'qi_men',
+              clientIntent: MessageToolClientIntent.toolExecutionRequested,
+              source: ChatToolIntentSource.fromAvailableToolsUi,
+            ),
+          ],
+        ),
+        const AssistantChatMessage(
+          text: '',
+          serverUuid: 'a1',
+          parentMessageUuid: 'u1',
+          generationStatus: AssistantGenerationStatus.failed,
+        ),
+      ]);
+
+      await bloc.stream.firstWhere(
+        (state) => state.retryUserMessageServerUuid == 'u1',
+      );
+
+      await bloc.submit(const ChatIntent.retryLastFailedTurn());
+      await bloc.stream.firstWhere((state) => !state.isSending);
+
+      expect(chatRepo.sentMessages, hasLength(1));
+      final sent = chatRepo.sentMessages.single;
+      expect(sent.userMessageText, 'hi');
+      expect(sent.editedMessageUuid, 'u1');
+      expect(sent.chatToolIntents, hasLength(1));
+      expect(sent.chatToolIntents.single.toolId, 'qi_men');
     });
   });
 
